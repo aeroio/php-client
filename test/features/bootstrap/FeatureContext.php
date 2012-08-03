@@ -13,6 +13,7 @@ use Behat\Gherkin\Node\PyStringNode,
 require_once 'PHPUnit/Autoload.php';
 require_once 'PHPUnit/Framework/Assert/Functions.php';
 
+require_once 'app/AeroClient.php';
 /**
  * Features context.
  */
@@ -57,7 +58,7 @@ class FeatureContext extends BehatContext
     /**
      * @Then /^I should receive the following projects:$/
      */
-    public function iShouldReceiveTheFollowingProjects(TableNode $table)
+    public function iShouldReceiveTheFollowingProjects(TableNode $projectsTable)
     {
 		$projects = $this->helper->columnToArray($projectsTable);
 
