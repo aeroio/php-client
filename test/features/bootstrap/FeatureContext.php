@@ -155,4 +155,48 @@ class FeatureContext extends BehatContext
 
 		assertEquals($this->project, $this->saved_project);
     }
+
+	/////////////////////////
+	//                     //
+	//   Update project    //
+	//                     //
+	/////////////////////////
+
+	/**
+     * @Given /^I have created project with id "([^"]*)"$/
+     */
+    public function iHaveCreateProjectWithIdAndDescription($project_id)
+    {
+		$this->project_id = $project_id;
+		$this->url = '/v1/project/' . $project_id;
+    }
+
+    /**
+     * @When /^I initialize the AeroClient and want to update it to "([^"]*)" with description "([^"]*)"$/
+     */
+    public function iInitializeTheAeroclientAndWantToUpdateItToWithDescription($project_name, $project_description)
+    {
+		$this->project = array('name' => $project_name, 'description' => $project_description);
+
+		$data_parser = $this->phpunit->getMock('DataParser', array('execute'));
+
+		$data_parser->expects($this->phpunit->once())
+			->method('execute')
+			->will($this->phpunit->returnValue($this->project))
+			->with($this->url);
+
+		$aero = new AeroClient();
+		$aero->setDataParser($data_parser);
+		$this->project = $aero->updateProject($this->project_id, $this->project);
+    }
+
+    /**
+     * @Then /^I should receive the updated project "([^"]*)" with description "([^"]*)"$/
+     */
+    public function iShouldReceiveProjectWithIdAndDescription($project_name, $project_description)
+    {
+        $project = array('name' => $project_name, 'description' => $project_description);
+
+		assertEquals($project, $this->project);
+    }
 }

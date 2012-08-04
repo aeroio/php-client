@@ -19,5 +19,14 @@ class RequestTest extends PHPUnit_Framework_TestCase {
 			$this->equalTo($reflector->isPublic())
 		);
 	}
+
+	public function testPutPublicity() {
+		$reflector = new ReflectionMethod('Request', 'put');
+
+		$this->assertThat(
+			true,
+			$this->equalTo($reflector->isPublic())
+		);
+	}
 }
 ?>

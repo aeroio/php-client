@@ -61,6 +61,15 @@ class AeroClientTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals($expected, $result);
 	}
 
+	public function testGetRequestParamsForProjectUpdate() {
+		$expected = array('type' => 'put', 'url' => '/v1/project');
+
+		$aero = new AeroClient();
+		$result = $aero->getRequestParams('updateProject');
+
+		$this->assertEquals($expected, $result);
+	}
+
 	public function testCreateContext() {
 		$aero = new AeroClient();
 
@@ -151,7 +160,7 @@ class AeroClientTest extends PHPUnit_Framework_TestCase {
 		$aero = new AeroClient();
 
 		$url = '/v1/project';
-		$arguments = array(1, array('name' => 'Twitter'));
+		$arguments = array(1, array('name' => 'Twitter', 'description' => 'Twitt Twitt'));
 		$expected = '/v1/project/1';
 
 		$result = $aero->buildUrl($url, $arguments);

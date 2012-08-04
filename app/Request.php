@@ -9,7 +9,19 @@ class Request {
 		return true;
 	}
 
+	/**
+	 * TODO
+	 * No context needed for the POST request till this moment.
+	 */
 	public function post() {
+		return true;
+	}
+
+	/**
+	 * TODO
+	 * No context needed for the POST request till this moment.
+	 */
+	public function put() {
 		return true;
 	}
 }

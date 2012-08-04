@@ -23,3 +23,8 @@ Feature: Manage projects
     Given I have built a project "Google" with description "Search engine"
     When I initialize the AeroClient and want to save it there
     Then I should receive project "Google" with description "Search engine"
+
+  Scenario: Update project
+    Given I have created project with id "1"
+    When I initialize the AeroClient and want to update it to "Facebook" with description "Meet your friends"
+    Then I should receive the updated project "Facebook" with description "Meet your friends"
