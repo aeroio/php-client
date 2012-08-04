@@ -8,5 +8,9 @@ class Request {
 	public function get() {
 		return true;
 	}
+
+	public function post() {
+		return true;
+	}
 }
 ?>

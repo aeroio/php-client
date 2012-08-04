@@ -18,3 +18,8 @@ Feature: Manage projects
     Given I have created project "Google" with id "1" in Aero.cx
     When I initialize the AeroCLient and want to get this project
     Then I should receive project "Google" with id "1"
+
+  Scenario: Create project
+    Given I have built a project "Google" with description "Search engine"
+    When I initialize the AeroClient and want to save it there
+    Then I should receive project "Google" with description "Search engine"

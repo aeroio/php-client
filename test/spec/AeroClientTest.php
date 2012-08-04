@@ -52,6 +52,15 @@ class AeroClientTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals($expected, $result);
 	}
 
+	public function testGetRequestParamsForProjectCreation() {
+		$expected = array('type' => 'post', 'url' => '/v1/projects');
+
+		$aero = new AeroClient();
+		$result = $aero->getRequestParams('createProject');
+
+		$this->assertEquals($expected, $result);
+	}
+
 	public function testCreateContext() {
 		$aero = new AeroClient();
 

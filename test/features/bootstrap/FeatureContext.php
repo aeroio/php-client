@@ -112,4 +112,47 @@ class FeatureContext extends BehatContext
 
 		assertEquals($project, $this->project);
     }
+
+	/////////////////////////
+	//                     //
+	//     POST project    //
+	//                     //
+	/////////////////////////
+
+	/**
+     * @Given /^I have built a project "([^"]*)" with description "([^"]*)"$/
+     */
+    public function iHaveBuiltAProjectWithDescription($project_name, $project_description)
+    {
+        $this->project = array('name' => $project_name, 'description' => $project_description);
+
+		$url = '/v1/projects';
+
+		$this->data_parser = $this->phpunit->getMock('DataParser', array('execute'));
+
+		$this->data_parser->expects($this->phpunit->once())
+			->method('execute')
+			->will($this->phpunit->returnValue($this->project))
+			->with($url);
+    }
+
+    /**
+     * @When /^I initialize the AeroClient and want to save it there$/
+     */
+    public function iInitializeTheAeroclientAndWantToSaveItThere()
+    {
+		$aero = new AeroClient();
+		$aero->setDataParser($this->data_parser);
+		$this->saved_project = $aero->createProject($this->project);
+    }
+
+	/**
+     * @Then /^I should receive project "([^"]*)" with description "([^"]*)"$/
+     */
+    public function iShouldReceiveProjectWithDescription($project_name, $project_description)
+    {
+        $this->project = array('name' => $project_name, 'description' => $project_description);
+
+		assertEquals($this->project, $this->saved_project);
+    }
 }

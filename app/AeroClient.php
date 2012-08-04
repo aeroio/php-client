@@ -24,9 +24,9 @@ class AeroClient {
 	 * @var array
 	 */
 	private $routes = array(
-		'getProjects' => array('type' => 'get', 'url' => '/v1/projects'),
-		'getProject'  => array('type' => 'get', 'url' => '/v1/project')
-
+		'getProjects'   => array( 'type' => 'get',  'url' => '/v1/projects' ),
+		'getProject'    => array( 'type' => 'get',  'url' => '/v1/project'  ),
+		'createProject' => array( 'type' => 'post', 'url' => '/v1/projects' )
 	);
 
 	/**
