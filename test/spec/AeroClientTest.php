@@ -34,11 +34,20 @@ class AeroClientTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals($expected, $result);
 	}
 
-	public function testGetRequestParams() {
+	public function testGetRequestParamsForAllProjects() {
 		$expected = array('type' => 'get', 'url' => '/v1/projects');
 
 		$aero = new AeroClient();
 		$result = $aero->getRequestParams('getProjects');
+
+		$this->assertEquals($expected, $result);
+	}
+
+	public function testGetRequestParamsForProjectWithID() {
+		$expected = array('type' => 'get', 'url' => '/v1/project');
+
+		$aero = new AeroClient();
+		$result = $aero->getRequestParams('getProject');
 
 		$this->assertEquals($expected, $result);
 	}
@@ -114,6 +123,44 @@ class AeroClientTest extends PHPUnit_Framework_TestCase {
 		$result = $aero->sendProjects();
 
 		$this->assertEquals($expected, $result);
+	}
+
+	public function testBuildUrlWithGivenNumericValueAsArgument() {
+		$aero = new AeroClient();
+
+		$url = '/v1/project';
+		$arguments = 1;
+		$expected = '/v1/project/1';
+
+		$result = $aero->buildUrl($url, $arguments);
+
+		$this->assertEquals($expected, $result);
+	}
+
+
+	public function testBuildUrlWithGivenArrayAndNumericValueAsArguments() {
+		$aero = new AeroClient();
+
+		$url = '/v1/project';
+		$arguments = array(1, array('name' => 'Twitter'));
+		$expected = '/v1/project/1';
+
+		$result = $aero->buildUrl($url, $arguments);
+
+		$this->assertEquals($expected, $result);
+	}
+
+	public function testBuildUrlWithGivenArrayForCreation() {
+		$aero = new AeroClient();
+
+		$url = '/v1/project';
+		$arguments = array(array('name' => 'Twitter', 'description' => 'Nice tool'));
+		$expected = '/v1/project';
+
+		$result = $aero->buildUrl($url, $arguments);
+
+		$this->assertEquals($expected, $result);
+
 	}
 }
 ?>

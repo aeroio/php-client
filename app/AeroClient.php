@@ -24,7 +24,9 @@ class AeroClient {
 	 * @var array
 	 */
 	private $routes = array(
-		'getProjects' => array('type' => 'get', 'url' => '/v1/projects')
+		'getProjects' => array('type' => 'get', 'url' => '/v1/projects'),
+		'getProject'  => array('type' => 'get', 'url' => '/v1/project')
+
 	);
 
 	/**
@@ -52,8 +54,10 @@ class AeroClient {
 
 		if ($data) {
 			$context = $this->createContext($data['type'], $arguments);
+			$url = $this->buildUrl($data['url'], $arguments);
+
 			if ($context) {
-				return $this->sendHttpRequest($data['url'], $context);
+				return $this->sendHttpRequest($url, $context);
 			}
 		} else {
 			return 'Such method does not exist';
@@ -128,6 +132,29 @@ class AeroClient {
 	 */
 	public function sendHttpRequest($url, $context = null) {
 		return $this->data_parser->execute($url, $context);
+	}
+
+	/**
+	 * Builds url for the request with the given arguments.
+	 *
+	 * @param string $url
+	 * @param array  $arguments
+	 * @return string
+	 */
+	public function buildUrl($url, $arguments) {
+		if (is_array($arguments)) {
+			foreach ($arguments as $argument) {
+				if (is_numeric($argument)) {
+					$url .= '/' . $argument;
+				}
+			}
+		} else if (is_numeric($arguments)) {
+			$url .= '/' . $arguments;
+		} else {
+			//nothing
+		}
+
+		return $url;
 	}
 }
 ?>

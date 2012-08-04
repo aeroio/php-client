@@ -31,6 +31,12 @@ class FeatureContext extends BehatContext
 		$this->phpunit = new PHPUnitHelper();
     }
 
+	/////////////////////////
+	//                     //
+	//  GET all projects   //
+	//                     //
+	/////////////////////////
+
 	/**
      * @Given /^I have created the following projects in Aero\.cx:$/
      */
@@ -63,5 +69,47 @@ class FeatureContext extends BehatContext
 		$projects = $this->helper->columnToArray($projectsTable);
 
 		assertEquals($projects, $this->projects);
+    }
+
+	/////////////////////////
+	//                     //
+	// GET project with ID //
+	//                     //
+	/////////////////////////
+
+	/**
+     * @Given /^I have created project "([^"]*)" with id "([^"]*)" in Aero\.cx$/
+     */
+    public function iHaveCreatedProjectWithIdInAeroCx($project_name, $project_id)
+    {
+		$project = array('id' => $project_id, 'name' => $project_name);
+		$url = '/v1/project/' . $project_id;
+
+		$this->data_parser = $this->phpunit->getMock('DataParser', array('execute'));
+
+		$this->data_parser->expects($this->phpunit->once())
+			->method('execute')
+			->will($this->phpunit->returnValue($project))
+			->with($url);
+    }
+
+    /**
+     * @When /^I initialize the AeroCLient and want to get this project$/
+     */
+    public function iInitializeTheAeroclientAndWantToGetThisProject()
+    {
+        $aero = new AeroClient();
+		$aero->setDataParser($this->data_parser);
+		$this->project = $aero->getProject(1);
+    }
+
+    /**
+     * @Then /^I should receive project "([^"]*)" with id "([^"]*)"$/
+     */
+    public function iShouldReceiveProjectWithId($project_name, $project_id)
+    {
+		$project = array('id' => $project_id, 'name' => $project_name);
+
+		assertEquals($project, $this->project);
     }
 }

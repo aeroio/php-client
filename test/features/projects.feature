@@ -13,3 +13,8 @@ Feature: Manage projects
       | Google   |
       | Twitter  |
       | Facebook |
+
+  Scenario: Get project with ID
+    Given I have created project "Google" with id "1" in Aero.cx
+    When I initialize the AeroCLient and want to get this project
+    Then I should receive project "Google" with id "1"
