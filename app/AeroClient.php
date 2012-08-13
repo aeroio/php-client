@@ -61,7 +61,7 @@ class AeroClient {
 				return $this->sendHttpRequest($url, $context);
 			}
 		} else {
-			return 'Such method does not exist';
+			throw new Exception('Invalid Method');
 		}
 	}
 

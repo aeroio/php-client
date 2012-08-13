@@ -136,11 +136,16 @@ class AeroClientTest extends PHPUnit_Framework_TestCase {
 
 	public function testRequestExecutionWhenMethodDoesntExists() {
 		$aero = new AeroClient();
-		$expected = 'Such method does not exist';
 
-		$result = $aero->sendProjects();
+		$expected = 'Invalid Method';
 
-		$this->assertEquals($expected, $result);
+		try {
+			$aero->sendProjects();
+		} catch (Exception $e) { 
+			$result = $e->getMessage();
+		}
+
+		$this->assertEquals($result, $expected);
 	}
 
 	public function testBuildUrlWithGivenNumericValueAsArgument() {
