@@ -3,7 +3,6 @@ require_once 'Request.php';
 require_once 'DataParser.php';
 
 class AeroClient {
-
 	/**
 	 * Request Object.
 	 *
