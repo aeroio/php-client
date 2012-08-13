@@ -199,4 +199,38 @@ class FeatureContext extends BehatContext
 
 		assertEquals($project, $this->project);
     }
+
+	/**
+     * @Given /^I have account in Aero\.cx with token "([^"]*)" and sid "([^"]*)"$/
+     */
+    public function iHaveAccountInAeroCxWithTokenAndSid($auth_token, $sid)
+    {
+		$this->auth_token = $auth_token;
+		$this->sid = $sid;
+    }
+
+    /**
+     * @When /^I initialize AeroClient with this information$/
+     */
+    public function iInitializeAeroclientWithThisInformation()
+    {
+		$aero = new AeroClient($this->auth_token, $this->sid);
+
+		$data_parser = $this->phpunit->getMock('DataParser', array('execute'));
+		$aero->setDataParser($data_parser);
+		$aero->getProjects();
+
+		$this->request = $aero->getRequest();
+    }
+
+    /**
+     * @Then /^it should be set into the header of the request$/
+     */
+    public function itShouldBeSetIntoTheHeaderOfTheRequest()
+    {
+		$expected = "Authorization: Basic " . base64_encode("$this->auth_token:$this->sid");
+		$result = $this->request->getHeader();
+
+		$this->phpunit->assertEquals($expected, $result);
+    }
 }
