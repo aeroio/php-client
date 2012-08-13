@@ -10,9 +10,7 @@ class DataParser {
 	 * @return object
 	 */
 	public function execute($url, $context) {
-		if ($context) return json_encode(file_get_contents($url, false, $context));
-
-		return json_encode(file_get_contents($url));
+		return json_encode(file_get_contents($url, false, $context));
 	}
 }
 ?>
