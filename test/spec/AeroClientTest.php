@@ -2,6 +2,24 @@
 require_once 'app/AeroClient.php';
 
 class AeroClientTest extends PHPUnit_Framework_TestCase {
+	public function testSetTokenAndSID() {
+		$expectedSid = 'SID';
+		$expectedToken = 'AUTH_TOKEN';
+
+		$request = $this->getMock('Request', array('get'));
+		$request->expects($this->once())
+			->method('get')
+			->with(
+				$this->equalTo($expectedToken),
+				$this->equalTo($expectedSid),
+				$this->equalTo(array())
+			);
+
+		$aero = new AeroClient($expectedToken, $expectedSid);
+		$aero->setRequest($request);
+		$aero->getProjects();
+	}
+
 	public function testInitializeDataParser() {
 		$aero = new AeroClient();
 		$data_parser = $aero->getDataParser();
@@ -73,18 +91,24 @@ class AeroClientTest extends PHPUnit_Framework_TestCase {
 	public function testCreateContext() {
 		$aero = new AeroClient();
 
+		$type = 'get';
+		$token = 'TOKEN';
+		$sid = 'SID';
+
 		$expected = 'request';
 		$request = $this->getMock('Request', array('get'));
 
 		$request->expects($this->once())
 			->method('get')
 			->will($this->returnValue($expected))
-			->with();
+			->with(
+				$this->equalTo($token),
+				$this->equalTo($sid)
+			);
 
 		$aero->setRequest($request);
 
-		$type = 'get';
-		$result = $aero->createContext($type);
+		$result = $aero->createContext($type, $token, $sid);
 
 		$this->assertEquals($expected, $result);
 	}

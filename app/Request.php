@@ -12,19 +12,25 @@ class Request {
 	 * TODO
 	 * No context needed for the GET request till this moment.
 	 */
-	public function get() {
-		return true;
+	public function get($auth_token, $sid) {
+		$this->setMethod(__FUNCTION__);
+		$this->setHeader("Authorization: Basic " . base64_encode("$auth_token:$sid"));
+
+		$context = $this->buildContext($this->request);
+
+		return $context;
 	}
 
 	/**
 	 * TODO
 	 * No context needed for the POST request till this moment.
 	 */
-	public function post($params) {
+	public function post($auth_token, $sid, $params) {
 		$query = $this->buildHttpQuery($params);
 
 		$this->setMethod(__FUNCTION__);
-		$this->setHeader("Connection: close\r\n" .
+		$this->setHeader("Authorization: Basic " . base64_encode("$auth_token:$sid") .
+						 "Connection: close\r\n" .
 						 "Content-Length: " . strlen($query) . "\r\n");
 		$this->setContent($query);
 
@@ -37,11 +43,12 @@ class Request {
 	 * TODO
 	 * No context needed for the POST request till this moment.
 	 */
-	public function put($params) {
+	public function put($auth_token, $sid, $params) {
 		$query = $this->buildHttpQuery($params);
 
 		$this->setMethod(__FUNCTION__);
-		$this->setHeader("Connection: close\r\n" .
+		$this->setHeader("Authorization: Basic " . base64_encode("$auth_token:$sid") .
+						 "Connection: close\r\n" .
 						 "Content-Length: " . strlen($query) . "\r\n");
 		$this->setContent($query);
 

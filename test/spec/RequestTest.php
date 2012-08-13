@@ -11,6 +11,21 @@ class RequestTest extends PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testGetWithTokenAndSid() {
+		$request = new Request();
+
+		$auth_token = 'AUTH_TOKEN';
+		$sid = 'SID';
+
+		$request->get($auth_token, $sid);
+
+		$expectedMethod = 'GET';
+		$expectedHeader = 'Authorization: Basic ' . base64_encode("$auth_token:$sid");
+
+		$this->assertEquals($expectedMethod, $request->getMethod());
+		$this->assertEquals($expectedHeader, $request->getHeader());
+	}
+
 	public function testPostPublicity() {
 		$reflector = new ReflectionMethod('Request', 'post');
 
@@ -20,6 +35,26 @@ class RequestTest extends PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testPostWithTokenAndSid() {
+		$request = new Request();
+
+		$auth_token = 'AUTH_TOKEN';
+		$sid = 'SID';
+		$params = array(array('name' => 'Google'));
+		$query = $request->buildHttpQuery($params);
+
+		$request->post($auth_token, $sid, $params);
+
+		$expectedMethod = 'POST';
+		$expectedHeader = 'Authorization: Basic ' . base64_encode("$auth_token:$sid") .
+						  "Connection: close\r\n" .
+						  "Content-Length: " . strlen($query) . "\r\n";
+		
+		$this->assertEquals($expectedMethod, $request->getMethod());
+		$this->assertEquals($expectedHeader, $request->getHeader());
+		$this->assertEquals($query,  $request->getContent());
+	}
+
 	public function testPutPublicity() {
 		$reflector = new ReflectionMethod('Request', 'put');
 
@@ -27,6 +62,26 @@ class RequestTest extends PHPUnit_Framework_TestCase {
 			true,
 			$this->equalTo($reflector->isPublic())
 		);
+	}
+
+	public function testPutWithTokenAndSid() {
+		$request = new Request();
+
+		$auth_token = 'AUTH_TOKEN';
+		$sid = 'SID';
+		$params = array(array('name' => 'Google'));
+		$query = $request->buildHttpQuery($params);
+
+		$request->put($auth_token, $sid, $params);
+
+		$expectedMethod = 'PUT';
+		$expectedHeader = 'Authorization: Basic ' . base64_encode("$auth_token:$sid") .
+						  "Connection: close\r\n" .
+						  "Content-Length: " . strlen($query) . "\r\n";
+		
+		$this->assertEquals($expectedMethod, $request->getMethod());
+		$this->assertEquals($expectedHeader, $request->getHeader());
+		$this->assertEquals($query,  $request->getContent());
 	}
 
 	public function testBuildHttpQueryWithArray() {
