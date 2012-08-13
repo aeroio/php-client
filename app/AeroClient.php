@@ -1,5 +1,5 @@
 <?php
-require_once 'Request.php';
+require_once 'HttpRequest.php';
 require_once 'DataParser.php';
 
 class AeroClient {
@@ -38,7 +38,7 @@ class AeroClient {
 		$this->auth_token = $auth_token;
 		$this->sid = $sid;
 
-		$this->request = new Request();
+		$this->request = new HttpRequest();
 		$this->data_parser = new DataParser();
 	}
 

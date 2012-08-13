@@ -1,9 +1,9 @@
 <?php
-require_once 'app/Request.php';
+require_once 'app/HttpRequest.php';
 
-class RequestTest extends PHPUnit_Framework_TestCase {
+class HttpRequestTest extends PHPUnit_Framework_TestCase {
 	public function testGetPublicity() {
-		$reflector = new ReflectionMethod('Request', 'get');
+		$reflector = new ReflectionMethod('HttpRequest', 'get');
 
 		$this->assertThat(
 			true,
@@ -12,7 +12,7 @@ class RequestTest extends PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetWithTokenAndSid() {
-		$request = new Request();
+		$request = new HttpRequest();
 
 		$auth_token = 'AUTH_TOKEN';
 		$sid = 'SID';
@@ -27,7 +27,7 @@ class RequestTest extends PHPUnit_Framework_TestCase {
 	}
 
 	public function testPostPublicity() {
-		$reflector = new ReflectionMethod('Request', 'post');
+		$reflector = new ReflectionMethod('HttpRequest', 'post');
 
 		$this->assertThat(
 			true,
@@ -36,7 +36,7 @@ class RequestTest extends PHPUnit_Framework_TestCase {
 	}
 
 	public function testPostWithTokenAndSid() {
-		$request = new Request();
+		$request = new HttpRequest();
 
 		$auth_token = 'AUTH_TOKEN';
 		$sid = 'SID';
@@ -56,7 +56,7 @@ class RequestTest extends PHPUnit_Framework_TestCase {
 	}
 
 	public function testPutPublicity() {
-		$reflector = new ReflectionMethod('Request', 'put');
+		$reflector = new ReflectionMethod('HttpRequest', 'put');
 
 		$this->assertThat(
 			true,
@@ -65,7 +65,7 @@ class RequestTest extends PHPUnit_Framework_TestCase {
 	}
 
 	public function testPutWithTokenAndSid() {
-		$request = new Request();
+		$request = new HttpRequest();
 
 		$auth_token = 'AUTH_TOKEN';
 		$sid = 'SID';
@@ -85,7 +85,7 @@ class RequestTest extends PHPUnit_Framework_TestCase {
 	}
 
 	public function testBuildHttpQueryWithArray() {
-		$request = new Request();
+		$request = new HttpRequest();
 
 		$params = array(array('name' => 'Google', 'description' => 'Search engine'));
 		$expected = 'name=Google&description=Search+engine';
@@ -96,7 +96,7 @@ class RequestTest extends PHPUnit_Framework_TestCase {
 	}
 
 	public function testBuildHttpQueryWithMixedParams() {
-		$request = new Request();
+		$request = new HttpRequest();
 
 		$params = array(1, array('name' => 'Google', 'description' => 'Search engine'));
 		$expected = 'name=Google&description=Search+engine';
@@ -108,7 +108,7 @@ class RequestTest extends PHPUnit_Framework_TestCase {
 
 
 	public function testBuildHttpQueryWithNumericParams() {
-		$request = new Request();
+		$request = new HttpRequest();
 
 		$params = array(1);
 		$expected = null;
@@ -119,7 +119,7 @@ class RequestTest extends PHPUnit_Framework_TestCase {
 	}
 
 	public function testSetAndGetHeader() {
-		$request = new Request();
+		$request = new HttpRequest();
 
 		$expected = 'header';
 		$request->setHeader($expected);
@@ -129,7 +129,7 @@ class RequestTest extends PHPUnit_Framework_TestCase {
 	}
 
 	public function testSetAndGetContent() {
-		$request = new Request();
+		$request = new HttpRequest();
 
 		$expected = 'content';
 		$request->setContent($expected);
@@ -139,7 +139,7 @@ class RequestTest extends PHPUnit_Framework_TestCase {
 	}
 	
 	public function testSetAndGetMethod() {
-		$request = new Request();
+		$request = new HttpRequest();
 
 		$actual = 'method';
 		$request->setMethod($actual);
@@ -150,7 +150,7 @@ class RequestTest extends PHPUnit_Framework_TestCase {
 	}
 
 	public function testBuildContext() {
-		$request = new Request();
+		$request = new HttpRequest();
 
 		$data = array(
 			'method' => 'POST',

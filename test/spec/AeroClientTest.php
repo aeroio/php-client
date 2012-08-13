@@ -6,7 +6,7 @@ class AeroClientTest extends PHPUnit_Framework_TestCase {
 		$expectedSid = 'SID';
 		$expectedToken = 'AUTH_TOKEN';
 
-		$request = $this->getMock('Request', array('get'));
+		$request = $this->getMock('HttpRequest', array('get'));
 		$request->expects($this->once())
 			->method('get')
 			->with(
@@ -40,7 +40,7 @@ class AeroClientTest extends PHPUnit_Framework_TestCase {
 		$aero = new AeroClient();
 		$request = $aero->getRequest();
 
-		$this->assertInstanceOf('Request', $request);
+		$this->assertInstanceOf('HttpRequest', $request);
 	}
 
 	public function testSetRequest() {
@@ -96,7 +96,7 @@ class AeroClientTest extends PHPUnit_Framework_TestCase {
 		$sid = 'SID';
 
 		$expected = 'request';
-		$request = $this->getMock('Request', array('get'));
+		$request = $this->getMock('HttpRequest', array('get'));
 
 		$request->expects($this->once())
 			->method('get')
@@ -138,7 +138,7 @@ class AeroClientTest extends PHPUnit_Framework_TestCase {
 		$expected = 'projects';
 
 		$context = 'context';
-		$request = $this->getMock('Request', array('get'));
+		$request = $this->getMock('HttpRequest', array('get'));
 		$request->expects($this->once())
 			->method('get')
 			->will($this->returnValue($context))
