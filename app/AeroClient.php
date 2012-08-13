@@ -35,7 +35,10 @@ class AeroClient {
 	 *
 	 * @return void
 	 */
-	public function __construct() {
+	public function __construct($auth_token = null, $sid = null) {
+		$this->auth_token = $auth_token;
+		$this->sid = $sid;
+
 		$this->request = new Request();
 		$this->data_parser = new DataParser();
 	}
@@ -54,7 +57,7 @@ class AeroClient {
 		$data = $this->getRequestParams($method);
 
 		if ($data) {
-			$context = $this->createContext($data['type'], $arguments);
+			$context = $this->createContext($data['type'], $this->auth_token, $this->sid, $arguments);
 			$url = $this->buildUrl($data['url'], $arguments);
 
 			if ($context) {
@@ -120,8 +123,8 @@ class AeroClient {
 	 * @param mixed  $arguments
 	 * @return object
 	 */
-	public function createContext($type, $arguments = null) {
-		return $this->request->$type($arguments);
+	public function createContext($type, $auth_token, $sid, $arguments = null) {
+		return $this->request->$type($auth_token, $sid, $arguments);
 	}
 
 	/**
