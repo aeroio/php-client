@@ -2,3 +2,22 @@ default:
   paths:
     features: test/features
     bootstrap: %behat.paths.features%/bootstrap
+
+curl:
+  paths:
+    features: test/features
+    bootstrap: %behat.paths.features%/bootstrap
+  filters:
+    tags: "@curl"
+  context:
+    class: CurlContext
+
+http:
+  paths:
+    features: test/features
+    bootstrap: %behat.paths.features%/bootstrap
+  filters:
+    tags: "@http"
+  context:
+    class: HttpContext
+

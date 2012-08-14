@@ -2,212 +2,295 @@
 require_once 'app/AeroClient.php';
 
 class AeroClientTest extends PHPUnit_Framework_TestCase {
-	public function testSetTokenAndSID() {
-		$expectedSid = 'SID';
-		$expectedToken = 'AUTH_TOKEN';
 
-		$request = $this->getMock('HttpRequest', array('get'));
-		$request->expects($this->once())
-			->method('get')
-			->with(
-				$this->equalTo($expectedToken),
-				$this->equalTo($expectedSid),
-				$this->equalTo(array())
-			);
+    public function testSetTokenAndSID() {
+        $parameters = array(
+            'auth_token' => 'AUTH_TOKEN',
+            'sid' => 'SID',
+            'curl' => false
+        );
 
-		$aero = new AeroClient($expectedToken, $expectedSid);
-		$aero->setRequest($request);
-		$aero->getProjects();
-	}
+        $request = $this->getMock('HttpRequest', array('get'));
+        $request->expects($this->once())
+            ->method('get')
+            ->with(
+                $this->equalTo($parameters['auth_token']),
+                $this->equalTo($parameters['sid']),
+                $this->equalTo(array())
+            );
 
-	public function testInitializeDataParser() {
-		$aero = new AeroClient();
-		$data_parser = $aero->getDataParser();
+        $aero = new AeroClient($parameters);
+        $aero->setRequest($request);
+        $aero->getProjects();
+    }
 
-		$this->assertInstanceOf('DataParser', $data_parser);
-	}
+    public function testSetAndGetParametersCompletelyOverriding() {
+        $aero = new AeroClient();
 
-	public function testSetDataParser() {
-		$aero = new AeroClient();
-		$expected = 'New Data Parser';
-		$aero->setDataParser($expected);
-		$result = $aero->getDataParser();
+        $expected = array(
+            'auth_token' => 'AUTH_TOKEN',
+            'sid' => 'SID',
+            'curl' => false
+        );
 
-		$this->assertEquals($expected, $result);
-	}
+        $aero->setParameters($expected);
+        $result = $aero->getParameters();
 
-	public function testInitializeRequest() {
-		$aero = new AeroClient();
-		$request = $aero->getRequest();
+        $this->assertEquals($expected, $result);
+    }
 
-		$this->assertInstanceOf('HttpRequest', $request);
-	}
+    public function testInitializeParameters() {
+        $expected = array(
+            'auth_token' => 'AUTH_TOKEN',
+            'sid' => 'SID',
+            'curl' => false
+        );
 
-	public function testSetRequest() {
-		$aero = new AeroClient();
-		$expected = 'New Request';
-		$aero->setRequest($expected);
-		$result = $aero->getRequest();
+        $aero = new AeroClient($expected);
+        $result = $aero->getParameters();
 
-		$this->assertEquals($expected, $result);
-	}
+        $this->assertEquals($expected, $result);
+    }
 
-	public function testGetRequestParamsForAllProjects() {
-		$expected = array('type' => 'get', 'url' => '/v1/projects');
+    public function testInitializeDataParser() {
+        $aero = new AeroClient();
+        $data_parser = $aero->getDataParser();
 
-		$aero = new AeroClient();
-		$result = $aero->getRequestParams('getProjects');
+        $this->assertInstanceOf('DataParser', $data_parser);
+    }
 
-		$this->assertEquals($expected, $result);
-	}
+    public function testSetDataParser() {
+        $aero = new AeroClient();
+        $expected = 'New Data Parser';
+        $aero->setDataParser($expected);
+        $result = $aero->getDataParser();
 
-	public function testGetRequestParamsForProjectWithID() {
-		$expected = array('type' => 'get', 'url' => '/v1/project');
+        $this->assertEquals($expected, $result);
+    }
 
-		$aero = new AeroClient();
-		$result = $aero->getRequestParams('getProject');
+    public function testSetRequest() {
+        $aero = new AeroClient();
+        $expected = 'New Request';
+        $aero->setRequest($expected);
+        $result = $aero->getRequest();
 
-		$this->assertEquals($expected, $result);
-	}
+        $this->assertEquals($expected, $result);
+    }
 
-	public function testGetRequestParamsForProjectCreation() {
-		$expected = array('type' => 'post', 'url' => '/v1/projects');
+    public function testGetRequestParamsForAllProjects() {
+        $expected = array('type' => 'get', 'url' => '/v1/projects');
 
-		$aero = new AeroClient();
-		$result = $aero->getRequestParams('createProject');
+        $aero = new AeroClient();
+        $result = $aero->getRequestParams('getProjects');
 
-		$this->assertEquals($expected, $result);
-	}
+        $this->assertEquals($expected, $result);
+    }
 
-	public function testGetRequestParamsForProjectUpdate() {
-		$expected = array('type' => 'put', 'url' => '/v1/project');
+    public function testGetRequestParamsForProjectWithID() {
+        $expected = array('type' => 'get', 'url' => '/v1/project');
 
-		$aero = new AeroClient();
-		$result = $aero->getRequestParams('updateProject');
+        $aero = new AeroClient();
+        $result = $aero->getRequestParams('getProject');
 
-		$this->assertEquals($expected, $result);
-	}
+        $this->assertEquals($expected, $result);
+    }
 
-	public function testCreateContext() {
-		$aero = new AeroClient();
+    public function testGetRequestParamsForProjectCreation() {
+        $expected = array('type' => 'post', 'url' => '/v1/projects');
 
-		$type = 'get';
-		$token = 'TOKEN';
-		$sid = 'SID';
+        $aero = new AeroClient();
+        $result = $aero->getRequestParams('createProject');
 
-		$expected = 'request';
-		$request = $this->getMock('HttpRequest', array('get'));
+        $this->assertEquals($expected, $result);
+    }
 
-		$request->expects($this->once())
-			->method('get')
-			->will($this->returnValue($expected))
-			->with(
-				$this->equalTo($token),
-				$this->equalTo($sid)
-			);
+    public function testGetRequestParamsForProjectUpdate() {
+        $expected = array('type' => 'put', 'url' => '/v1/project');
 
-		$aero->setRequest($request);
+        $aero = new AeroClient();
+        $result = $aero->getRequestParams('updateProject');
 
-		$result = $aero->createContext($type, $token, $sid);
+        $this->assertEquals($expected, $result);
+    }
 
-		$this->assertEquals($expected, $result);
-	}
+    public function testcreateHttpContext() {
+        $auth_token = 'AUTH_TOKEN';
+        $sid = 'SID';
 
-	public function testSendHttpRequest() {
-		$aero = new AeroClient();
+        $aero = new AeroClient(array(
+            'auth_token' => $auth_token,
+            'sid' => $sid
+        ));
 
-		$expected = 'response';
-		$data_parser = $this->getMock('DataParser', array('execute'));
+        $type = 'get';
 
-		$data_parser->expects($this->once())
-			->method('execute')
-			->will($this->returnValue($expected))
-			->with();
+        $expected = 'request';
+        $request = $this->getMock('HttpRequest', array('get'));
 
-		$aero->setDataParser($data_parser);
+        $request->expects($this->once())
+            ->method('get')
+            ->will($this->returnValue($expected))
+            ->with(
+                $auth_token,
+                $sid
+            );
 
-		$url = 'url';
-		$context = 'context';
-		$result = $aero->sendHttpRequest($url, $context);
+        $aero->setRequest($request);
 
-		$this->assertEquals($expected, $result);
-	}
+        $result = $aero->createHttpContext($type);
 
-	public function testRequestExecutionWhenMethodExists() {
-		$aero = new AeroClient();
-		$expected = 'projects';
+        $this->assertEquals($expected, $result);
+    }
 
-		$context = 'context';
-		$request = $this->getMock('HttpRequest', array('get'));
-		$request->expects($this->once())
-			->method('get')
-			->will($this->returnValue($context))
-			->with();
+    public function testCreateCurlRequest() {
+        $auth_token = 'AUTH_TOKEN';
+        $sid = 'SID';
 
-		$url = '/v1/projects';
-		$data_parser = $this->getMock('DataParser', array('execute'));
-		$data_parser->expects($this->once())
-			->method('execute')
-			->will($this->returnValue($expected))
-			->with($this->equalTo($url));
+        $aero = new AeroClient(array(
+            'auth_token' => $auth_token,
+            'sid' => $sid
+        ));
 
-		$aero->setRequest($request);
-		$aero->setDataParser($data_parser);
-		$result = $aero->getProjects();
+        $type = 'get';
+        $url = '/v1/projects';
 
-		$this->assertEquals($expected, $result);
-	}
+        $expected = 'request';
+        $request = $this->getMock('CurlRequest', array('get'));
 
-	public function testRequestExecutionWhenMethodDoesntExists() {
-		$aero = new AeroClient();
+        $request->expects($this->once())
+            ->method('get')
+            ->will($this->returnValue($expected))
+            ->with(
+                $auth_token,
+                $sid,
+                $url
+            );
 
-		$expected = 'Invalid Method';
+        $aero->setRequest($request);
 
-		try {
-			$aero->sendProjects();
-		} catch (Exception $e) { 
-			$result = $e->getMessage();
-		}
+        $result = $aero->createCurlRequest($type, $url);
 
-		$this->assertEquals($result, $expected);
-	}
+        $this->assertEquals($expected, $result);
+    }
 
-	public function testBuildUrlWithGivenNumericValueAsArgument() {
-		$aero = new AeroClient();
+    public function testSendHttpRequest() {
+        $aero = new AeroClient();
 
-		$url = '/v1/project';
-		$arguments = 1;
-		$expected = '/v1/project/1';
+        $expected = 'response';
+        $data_parser = $this->getMock('DataParser', array('executeHttp'));
 
-		$result = $aero->buildUrl($url, $arguments);
+        $data_parser->expects($this->once())
+            ->method('executeHttp')
+            ->will($this->returnValue($expected))
+            ->with();
 
-		$this->assertEquals($expected, $result);
-	}
+        $aero->setDataParser($data_parser);
+
+        $url = 'url';
+        $context = 'context';
+        $result = $aero->sendHttpRequest($url, $context);
+
+        $this->assertEquals($expected, $result);
+    }
+
+    public function testRequestExecutionWhenMethodExists() {
+        $parameters = array(
+            'auth_token' => 'AUTH_TOKEN',
+            'sid' => 'SID',
+            'curl' => false
+        );
+        $aero = new AeroClient($parameters);
+        $expected = 'projects';
+
+        $context = 'context';
+        $request = $this->getMock('HttpRequest', array('get'));
+        $request->expects($this->once())
+            ->method('get')
+            ->will($this->returnValue($context))
+            ->with();
+
+        $url = '/v1/projects';
+        $data_parser = $this->getMock('DataParser', array('executeHttp'));
+        $data_parser->expects($this->once())
+            ->method('executeHttp')
+            ->will($this->returnValue($expected))
+            ->with($this->equalTo($url));
+
+        $aero->setRequest($request);
+        $aero->setDataParser($data_parser);
+        $result = $aero->getProjects();
+
+        $this->assertEquals($expected, $result);
+    }
+
+    public function testRequestExecutionWhenMethodDoesntExists() {
+        $aero = new AeroClient();
+
+        $expected = 'Invalid Method';
+
+        try {
+            $aero->sendProjects();
+        } catch (Exception $e) { 
+            $result = $e->getMessage();
+        }
+
+        $this->assertEquals($result, $expected);
+    }
+
+    public function testBuildUrlWithGivenNumericValueAsArgument() {
+        $aero = new AeroClient();
+
+        $url = '/v1/project';
+        $arguments = 1;
+        $expected = '/v1/project/1';
+
+        $result = $aero->buildUrl($url, $arguments);
+
+        $this->assertEquals($expected, $result);
+    }
 
 
-	public function testBuildUrlWithGivenArrayAndNumericValueAsArguments() {
-		$aero = new AeroClient();
+    public function testBuildUrlWithGivenArrayAndNumericValueAsArguments() {
+        $aero = new AeroClient();
 
-		$url = '/v1/project';
-		$arguments = array(1, array('name' => 'Twitter', 'description' => 'Twitt Twitt'));
-		$expected = '/v1/project/1';
+        $url = '/v1/project';
+        $arguments = array(1, array('name' => 'Twitter', 'description' => 'Twitt Twitt'));
+        $expected = '/v1/project/1';
 
-		$result = $aero->buildUrl($url, $arguments);
+        $result = $aero->buildUrl($url, $arguments);
 
-		$this->assertEquals($expected, $result);
-	}
+        $this->assertEquals($expected, $result);
+    }
 
-	public function testBuildUrlWithGivenArrayForCreation() {
-		$aero = new AeroClient();
+    public function testBuildUrlWithGivenArrayForCreation() {
+        $aero = new AeroClient();
 
-		$url = '/v1/project';
-		$arguments = array(array('name' => 'Twitter', 'description' => 'Nice tool'));
-		$expected = '/v1/project';
+        $url = '/v1/project';
+        $arguments = array(array('name' => 'Twitter', 'description' => 'Nice tool'));
+        $expected = '/v1/project';
 
-		$result = $aero->buildUrl($url, $arguments);
+        $result = $aero->buildUrl($url, $arguments);
 
-		$this->assertEquals($expected, $result);
+        $this->assertEquals($expected, $result);
 
-	}
+    }
+
+    public function testSendCurlRequest() {
+        $request = 'request';
+        $expected = 'result';
+
+        $data_parser = $this->getMock('DataParser', array('executeCurl'));
+
+        $data_parser->expects($this->once())
+            ->method('executeCurl')
+            ->with($request)
+            ->will($this->returnValue($expected));
+
+        $aero = new AeroClient();
+        $aero->setDataParser($data_parser);
+        $result = $aero->sendCurlRequest($request);
+
+        $this->assertEquals($expected, $result);
+    }
 }
 ?>

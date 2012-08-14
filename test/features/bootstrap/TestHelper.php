@@ -1,22 +1,21 @@
 <?php
 class TestHelper {
+    /**
+     * Turns a column with values from the features into an array.
+     *
+     * @param object $data
+     * @return array
+     */
+    public function columnToArray($data) {
+        $values = $data->getRows();
 
-	/**
-	 * Turns a column with values from the features into an array.
-	 *
-	 * @param object $data
-	 * @return array
-	 */
-	public function columnToArray($data) {
-		$values = $data->getRows();
+        $array = array();
 
-		$array = array();
+        foreach($values as $value) {
+            $array[] = $value[0];
+        }
 
-		foreach($values as $value) {
-			$array[] = $value[0];
-		}
-
-		return $array;
-	}
+        return $array;
+    }
 }
 ?>

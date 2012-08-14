@@ -3,6 +3,10 @@ Feature: Manage projects
   I want to be able to communicate with Aero.cx from my application
   So that I can manage my projects there
 
+  Background:
+    Given I do not have cURL on my server
+
+  @http @projects
   Scenario: Get all projects
     Given I have created the following projects in Aero.cx:
       | Google   |
@@ -14,16 +18,19 @@ Feature: Manage projects
       | Twitter  |
       | Facebook |
 
+  @http @projects
   Scenario: Get project with ID
     Given I have created project "Google" with id "1" in Aero.cx
     When I initialize the AeroCLient and want to get this project
     Then I should receive project "Google" with id "1"
 
+  @http @projects
   Scenario: Create project
     Given I have built a project "Google" with description "Search engine"
     When I initialize the AeroClient and want to save it there
     Then I should receive project "Google" with description "Search engine"
 
+  @http @projects
   Scenario: Update project
     Given I have created project with id "1"
     When I initialize the AeroClient and want to update it to "Facebook" with description "Meet your friends"
