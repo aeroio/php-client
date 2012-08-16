@@ -113,14 +113,14 @@ class AeroClientTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals($expected, $result);
     }
 
-	public function testGetRequestParamsForProjectDelete() {
-		$expected = array('type' => 'delete', 'url' => '/v1/project');
+    public function testGetRequestParamsForProjectDelete() {
+        $expected = array('type' => 'delete', 'url' => '/v1/project');
 
-		$aero = new AeroClient();
-		$result = $aero->getRequestParams('deleteProject');
+        $aero = new AeroClient();
+        $result = $aero->getRequestParams('deleteProject');
 
-		$this->assertEquals($expected, $result);
-	}
+        $this->assertEquals($expected, $result);
+    }
 
     public function testcreateHttpContext() {
         $auth_token = 'AUTH_TOKEN';

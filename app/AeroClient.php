@@ -18,11 +18,11 @@ class AeroClient {
      */
     private $data_parser;
 
-	/**
-	 * Default settings.
-	 *
-	 * @var array
-	 */
+    /**
+     * Default settings.
+     *
+     * @var array
+     */
     private $parameters = array(
         'curl' => true
     );
@@ -36,8 +36,8 @@ class AeroClient {
         'getProjects'   => array( 'type' => 'get'   , 'url' => '/v1/projects' ),
         'getProject'    => array( 'type' => 'get'   , 'url' => '/v1/project'  ),
         'createProject' => array( 'type' => 'post'  , 'url' => '/v1/projects' ),
-		'updateProject' => array( 'type' => 'put'   , 'url' => '/v1/project'  ),
-		'deleteProject' => array( 'type' => 'delete', 'url' => '/v1/project'  ),
+        'updateProject' => array( 'type' => 'put'   , 'url' => '/v1/project'  ),
+        'deleteProject' => array( 'type' => 'delete', 'url' => '/v1/project'  ),
     );
 
     /**
