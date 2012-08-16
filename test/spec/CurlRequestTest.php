@@ -33,10 +33,9 @@ class CurlRequestTest extends PHPUnit_Framework_TestCase {
     }
 
     public function testInitializeTheCurlProcess() {
-        $url = 'www.example.com';
         $expected = 'resource';
 
-        $request = new CurlRequest($url);
+        $request = new CurlRequest();
         $result = $request->getCurlProcess();
 
         $this->assertEquals(gettype($result), $expected);
@@ -44,17 +43,19 @@ class CurlRequestTest extends PHPUnit_Framework_TestCase {
 
     public function testGetProcessInfo() {
         $url = 'www.example.com';
-        $request = new CurlRequest($url);
+        $request = new CurlRequest();
 
+		$request->setOption(CURLOPT_URL, $url);
         $result = $request->getInfo();
 
         $this->assertEquals($url, $result['url']);
     }
 
-    public function testGetProcessInfoForUrl() {
+    public function testGetProcessInfoForAttribute() {
         $url = 'www.example.com';
-        $request = new CurlRequest($url);
+        $request = new CurlRequest();
 
+		$request->setOption(CURLOPT_URL, $url);
         $result = $request->getInfo(CURLINFO_EFFECTIVE_URL);
 
         $this->assertEquals($url, $result);
@@ -62,11 +63,9 @@ class CurlRequestTest extends PHPUnit_Framework_TestCase {
 
     public function testExecute() {
         $url = 'www.example.com';
-        $request = new CurlRequest($url);
+        $request = new CurlRequest();
 
-        $auth_token = 'AUTH_TOKEN';
-        $sid = 'SID';
-
+		$request->setOption(CURLOPT_URL, $url);
         $request->execute();
         $result = $request->getInfo();
 
@@ -75,7 +74,7 @@ class CurlRequestTest extends PHPUnit_Framework_TestCase {
 
     public function testSetOption() {
         $url = 'www.example.com';
-        $request = new CurlRequest($url);
+        $request = new CurlRequest();
 
         $auth_token = 'AUTH_TOKEN';
         $sid = 'SID';
@@ -83,6 +82,7 @@ class CurlRequestTest extends PHPUnit_Framework_TestCase {
         $expected = "Authorization: Basic " . base64_encode("$auth_token:$sid");
         $header = array($expected);
 
+		$request->setOption(CURLOPT_URL, $url);
         $request->setOption(CURLOPT_RETURNTRANSFER, true);
         $request->setOption(CURLOPT_HTTPHEADER, $header);
         $request->setOption(CURLINFO_HEADER_OUT, true);

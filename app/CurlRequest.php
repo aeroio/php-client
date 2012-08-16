@@ -13,8 +13,8 @@ class CurlRequest {
      * @param string $url
      * @return void
      */
-    public function __construct($url = null) {
-        $this->setCurlProcess($url);
+    public function __construct() {
+        $this->setCurlProcess();
     }
 
     /**
@@ -26,6 +26,7 @@ class CurlRequest {
      * @return resourse
      */
     public function get($auth_token, $sid, $url) {
+        $this->setOption(CURLOPT_URL, $url);
         $this->setOption(CURLOPT_HTTPHEADER, array("Authorization: Basic " . base64_encode("$auth_token:$sid")));
         $this->setOption(CURLOPT_RETURNTRANSFER, true);
 
@@ -44,6 +45,7 @@ class CurlRequest {
     public function post($auth_token, $sid, $url, $params) {
         $body = $this->buildHttpQuery($params);
 
+        $this->setOption(CURLOPT_URL, $url);
         $this->setOption(CURLOPT_POST, true);
         $this->setOption(CURLOPT_POSTFIELDS, $body);
         $this->setOption(CURLOPT_HTTPHEADER, array("Authorization: Basic " . base64_encode("$auth_token:$sid")));
@@ -64,6 +66,7 @@ class CurlRequest {
     public function put($auth_token, $sid, $url, $params) {
         $body = $this->buildHttpQuery($params);
 
+        $this->setOption(CURLOPT_URL, $url);
         $this->setOption(CURLOPT_CUSTOMREQUEST, "PUT");
         $this->setOption(CURLOPT_POSTFIELDS, $body);
         $this->setOption(CURLOPT_HTTPHEADER, array("Authorization: Basic " . base64_encode("$auth_token:$sid")));
@@ -81,6 +84,7 @@ class CurlRequest {
      * @return resourse
      */
     public function delete($auth_token, $sid, $url) {
+        $this->setOption(CURLOPT_URL, $url);
         $this->setOption(CURLOPT_CUSTOMREQUEST, "DELETE");
         $this->setOption(CURLOPT_HTTPHEADER, array("Authorization: Basic " . base64_encode("$auth_token:$sid")));
         $this->setOption(CURLOPT_RETURNTRANSFER, true);
@@ -94,8 +98,8 @@ class CurlRequest {
      * @param string $url
      * @return void
      */
-    public function setCurlProcess($url) {
-        $this->process = curl_init($url);
+    public function setCurlProcess() {
+        $this->process = curl_init();
     }
 
     /**
