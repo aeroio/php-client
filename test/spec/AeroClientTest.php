@@ -1,5 +1,5 @@
 <?php
-require_once 'app/AeroClient.php';
+require_once 'src/AeroClient.php';
 
 class AeroClientTest extends PHPUnit_Framework_TestCase {
 

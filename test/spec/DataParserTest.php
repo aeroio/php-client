@@ -1,5 +1,5 @@
 <?php
-require_once 'app/DataParser.php';
+require_once 'src/DataParser.php';
 
 class DataParserTest extends PHPUnit_Framework_TestCase {
     public function testExecutePublicity() {

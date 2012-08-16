@@ -1,5 +1,5 @@
 <?php
-require_once 'app/HttpRequest.php';
+require_once 'src/HttpRequest.php';
 
 class HttpRequestTest extends PHPUnit_Framework_TestCase {
     public function testGetPublicity() {

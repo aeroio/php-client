@@ -51,14 +51,14 @@ phpunit test/spec
 If you want to run the integration(Behat) tests just enter the following in the command line:
 
 ```
-behat
+bin/behat
 ```
 
 There are tags describing the different functionality for instance - `@http`, `@curl`, `@projects`, `@authorize`, etc.
 If you want to only run the test cases linked to certain functionality, you can do this with:
 
 ```
-behat --tags="@tag_name"
+bin/behat --tags="@tag_name"
 
-behat --tags="@tag1, @tag2"
+bin/behat --tags="@tag1, @tag2"
 ```

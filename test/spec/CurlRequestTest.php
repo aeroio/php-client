@@ -1,5 +1,5 @@
 <?php
-require_once 'app/CurlRequest.php';
+require_once 'src/CurlRequest.php';
 
 class CurlRequestTest extends PHPUnit_Framework_TestCase {
     public function testGetPublicity() {
