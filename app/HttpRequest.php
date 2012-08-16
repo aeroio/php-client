@@ -9,8 +9,11 @@ class HttpRequest {
     private $request = array();
 
     /**
-     * TODO
-     * No context needed for the GET request till this moment.
+	 * Build the Http context for GET request.
+	 *
+	 * @param string $auth_token
+	 * @param string $sid
+	 * @return resourse
      */
     public function get($auth_token, $sid) {
         $this->setMethod(__FUNCTION__);
@@ -22,8 +25,12 @@ class HttpRequest {
     }
 
     /**
-     * TODO
-     * No context needed for the POST request till this moment.
+	 * Build the Http context for POST request.
+	 *
+	 * @param string @auth_token
+	 * @param string @sid
+	 * @param array  @params
+	 * @return resourse
      */
     public function post($auth_token, $sid, $params) {
         $query = $this->buildHttpQuery($params);
@@ -40,10 +47,36 @@ class HttpRequest {
     }
 
     /**
-     * TODO
-     * No context needed for the POST request till this moment.
+	 * Build the Http context for the PUT request.
+	 *
+	 * @param string @auth_token
+	 * @param string @sid
+	 * @param array  @params
+	 * @return resourse
      */
     public function put($auth_token, $sid, $params) {
+        $query = $this->buildHttpQuery($params);
+
+        $this->setMethod(__FUNCTION__);
+        $this->setHeader("Authorization: Basic " . base64_encode("$auth_token:$sid") .
+                         "Connection: close\r\n" .
+                         "Content-Length: " . strlen($query) . "\r\n");
+        $this->setContent($query);
+
+        $context = $this->buildContext($this->request);
+
+        return $context;
+    }
+
+	/**
+	 * Build the Http context for the DELETE request.
+	 *
+	 * @param string @auth_token
+	 * @param string @sid
+	 * @param array  @params
+	 * @return resourse
+     */
+    public function delete($auth_token, $sid, $params) {
         $query = $this->buildHttpQuery($params);
 
         $this->setMethod(__FUNCTION__);

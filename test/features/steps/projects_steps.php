@@ -142,4 +142,28 @@
 			assertEquals($project, $world->project);
 		}
 	);
+
+	//// DELETE PROJECT ////
+
+	$steps->When('/^I initialize the AeroClient and want to delete it$/',
+		function($world) {
+			$world->expected = 'deleted';
+
+			$data_parser = $world->phpunit->getMock('DataParser', array('execute'));
+
+			$data_parser->expects($world->phpunit->once())
+				->method('execute')
+				->will($world->phpunit->returnValue($world->expected));
+
+			$aero = new AeroClient($world->parameters);
+			$aero->setDataParser($data_parser);
+			$world->result = $aero->deleteProject($world->project_id);
+		}
+	);
+
+	$steps->Then('/^I should receive delete confirmation status$/',
+		function($world) {
+			$world->phpunit->assertEquals($world->expected, $world->result);
+		}
+	);
 ?>

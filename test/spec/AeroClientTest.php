@@ -113,6 +113,15 @@ class AeroClientTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals($expected, $result);
     }
 
+	public function testGetRequestParamsForProjectDelete() {
+		$expected = array('type' => 'delete', 'url' => '/v1/project');
+
+		$aero = new AeroClient();
+		$result = $aero->getRequestParams('deleteProject');
+
+		$this->assertEquals($expected, $result);
+	}
+
     public function testcreateHttpContext() {
         $auth_token = 'AUTH_TOKEN';
         $sid = 'SID';
@@ -177,12 +186,11 @@ class AeroClientTest extends PHPUnit_Framework_TestCase {
         $aero = new AeroClient();
 
         $expected = 'response';
-        $data_parser = $this->getMock('DataParser', array('executeHttp'));
+        $data_parser = $this->getMock('DataParser', array('execute'));
 
         $data_parser->expects($this->once())
-            ->method('executeHttp')
-            ->will($this->returnValue($expected))
-            ->with();
+            ->method('execute')
+            ->will($this->returnValue($expected));
 
         $aero->setDataParser($data_parser);
 
@@ -210,9 +218,9 @@ class AeroClientTest extends PHPUnit_Framework_TestCase {
             ->with();
 
         $url = '/v1/projects';
-        $data_parser = $this->getMock('DataParser', array('executeHttp'));
+        $data_parser = $this->getMock('DataParser', array('execute'));
         $data_parser->expects($this->once())
-            ->method('executeHttp')
+            ->method('execute')
             ->will($this->returnValue($expected))
             ->with($this->equalTo($url));
 
@@ -279,10 +287,10 @@ class AeroClientTest extends PHPUnit_Framework_TestCase {
         $request = 'request';
         $expected = 'result';
 
-        $data_parser = $this->getMock('DataParser', array('executeCurl'));
+        $data_parser = $this->getMock('DataParser', array('execute'));
 
         $data_parser->expects($this->once())
-            ->method('executeCurl')
+            ->method('execute')
             ->with($request)
             ->will($this->returnValue($expected));
 

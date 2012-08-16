@@ -35,3 +35,9 @@ Feature: Manage projects
     Given I have created project with id "1"
     When I initialize the AeroClient and want to update it to "Facebook" with description "Meet your friends"
     Then I should receive the updated project "Facebook" with description "Meet your friends"
+
+  @http @projects
+  Scenario: Delete project
+    Given I have created project with id "1"
+    When I initialize the AeroClient and want to delete it
+    Then I should receive delete confirmation status

@@ -78,11 +78,31 @@ class HttpRequestTest extends PHPUnit_Framework_TestCase {
         $expectedHeader = 'Authorization: Basic ' . base64_encode("$auth_token:$sid") .
                           "Connection: close\r\n" .
                           "Content-Length: " . strlen($query) . "\r\n";
-        
+
         $this->assertEquals($expectedMethod, $request->getMethod());
         $this->assertEquals($expectedHeader, $request->getHeader());
         $this->assertEquals($query,  $request->getContent());
     }
+
+	public function testDeleteWithTokenAndSid() {
+        $request = new HttpRequest();
+
+        $auth_token = 'AUTH_TOKEN';
+        $sid = 'SID';
+        $params = array(array('name' => 'Google'));
+        $query = $request->buildHttpQuery($params);
+
+        $request->delete($auth_token, $sid, $params);
+
+        $expectedMethod = 'DELETE';
+        $expectedHeader = 'Authorization: Basic ' . base64_encode("$auth_token:$sid") .
+                          "Connection: close\r\n" .
+                          "Content-Length: " . strlen($query) . "\r\n";
+
+        $this->assertEquals($expectedMethod, $request->getMethod());
+        $this->assertEquals($expectedHeader, $request->getHeader());
+        $this->assertEquals($query,  $request->getContent());
+	}
 
     public function testBuildHttpQueryWithArray() {
         $request = new HttpRequest();

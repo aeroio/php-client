@@ -33,10 +33,11 @@ class AeroClient {
      * @var array
      */
     private $routes = array(
-        'getProjects'   => array( 'type' => 'get'  , 'url' => '/v1/projects' ),
-        'getProject'    => array( 'type' => 'get'  , 'url' => '/v1/project'  ),
-        'createProject' => array( 'type' => 'post' , 'url' => '/v1/projects' ),
-        'updateProject' => array( 'type' => 'put'  , 'url' => '/v1/project'  )
+        'getProjects'   => array( 'type' => 'get'   , 'url' => '/v1/projects' ),
+        'getProject'    => array( 'type' => 'get'   , 'url' => '/v1/project'  ),
+        'createProject' => array( 'type' => 'post'  , 'url' => '/v1/projects' ),
+		'updateProject' => array( 'type' => 'put'   , 'url' => '/v1/project'  ),
+		'deleteProject' => array( 'type' => 'delete', 'url' => '/v1/project'  ),
     );
 
     /**
@@ -226,13 +227,11 @@ class AeroClient {
         if (is_array($arguments)) {
             foreach ($arguments as $argument) {
                 if (is_numeric($argument)) {
-                    $url = $url . '/' . $argument;
+                    $url .= '/' . $argument;
                 }
             }
         } else if (is_numeric($arguments)) {
             $url .= '/' . $arguments;
-        } else {
-            //nothing
         }
 
         return $url;
