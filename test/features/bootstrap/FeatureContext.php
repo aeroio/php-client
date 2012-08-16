@@ -12,7 +12,11 @@ use Behat\Gherkin\Node\PyStringNode,
 require_once 'PHPUnit/Autoload.php';
 require_once 'PHPUnit/Framework/Assert/Functions.php';
 
+//
+// Require tested files here:
+//
 require_once 'app/AeroClient.php';
+
 /**
  * Features context.
  */
@@ -32,7 +36,7 @@ class FeatureContext extends BehatContext implements ClosuredContextInterface
 
     public function getStepDefinitionResources()
     {
-        return Autoload::execute('./test/features/steps/', 'steps.php');
+        return Autoload::execute(__DIR__ . '/../steps/', 'steps.php');
     }
 
     public function getHookDefinitionResources()

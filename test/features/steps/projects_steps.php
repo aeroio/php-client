@@ -9,7 +9,7 @@
 		}
 	);
 
-	$steps->Given('/^I have cURL on my server$/', 
+	$steps->Given('/^I have cURL on my server$/',
 		function($world) {
 			$world->parameters = array(
 				'auth_token' => 'AUTH_TOKEN',

@@ -13,7 +13,7 @@
 		function($world) {
 			$aero = new AeroClient($world->parameters);
 
-			$data_parser = $world->phpunit->getMock('DataParser', array('executeHttp'));
+			$data_parser = $world->phpunit->getMock('DataParser', array('execute'));
 			$aero->setDataParser($data_parser);
 			$aero->getProjects();
 
