@@ -5,10 +5,7 @@ require_once 'src/Connection.php';
 require_once 'src/Request.php';
 require_once 'src/resources/Project.php';
 
-class AeroResource {
-	public $id;
-	public $_attributes = array();
-
+class Aero_Resource {
 	public function __construct(Array $attributes = null) {
 		if ($attributes) {
 			foreach ($attributes as $attribute => $value) {
@@ -33,9 +30,58 @@ class AeroResource {
 
 	public static function all() {
 		$type = 'GET';
-		$url = '/api/v1/projects.json';
 
-		return AeroConnection::persist($type, $url);
+		$klass = get_called_class();
+		$resource = new $klass();
+
+		$response = Aero_Connection::persist($type, $resource);
+
+		$result = json_decode($response);
+
+		$array = array();
+		foreach ($result as $project) {
+			if (is_object($project)) {
+				$res = get_object_vars($project);
+				$array[] = new Aero_Projects($res);
+			}
+		}
+
+		// $project->load_attributes($result);
+
+		return $array;
+	}
+
+	public static function first($id) {
+		$type = 'GET';
+
+		$klass = get_called_class();
+		$resource = new $klass();
+		$resource->id = $id;
+
+		$response = Aero_Connection::persist($type, $resource);
+		
+		$result = json_decode($response);
+
+		if (is_object($result)) {
+			$result = get_object_vars($result);
+		}
+
+		// $project->load_attributes($result);
+
+		return new Aero_Projects($result);
+	}
+
+	public function url() {
+		$resource = strtolower(get_called_class());
+		$resource = end(explode('_', $resource));
+
+		$url = "/api/v1/$resource";
+
+		if ($this->id) {
+			$url .= "/$this->id";
+		}
+
+		return $url .= '.json';
 	}
 }
 ?>

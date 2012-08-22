@@ -6,7 +6,7 @@ class AeroRequestTest extends PHPUnit_Framework_TestCase {
 		$params = array('id' => 1);
 		$expected = $params['id'];
 
-		$aero = new AeroRequest($params);
+		$aero = new Aero_Request($params);
 		$result = $aero->id;
 
 		$this->assertEquals($expected, $result);

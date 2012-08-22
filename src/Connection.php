@@ -1,7 +1,8 @@
 <?php
-class AeroConnection {
-	public static function persist($type, $url, $params = null) {
-		$url = self::$base . $url;
+
+class Aero_Connection {
+	public static function persist($type, $resource) {
+		$url = self::$base . $resource->url();
 
 		$params = array(
 			'type' => $type,
@@ -10,7 +11,7 @@ class AeroConnection {
 			'sid' => self::$credentials['sid']
 		);
 
-		$request = new AeroRequest($params);
+		$request = new Aero_Request($params);
 
 		$result = self::$engine->execute($request);
 
@@ -19,6 +20,6 @@ class AeroConnection {
 
 	public static $engine;
 	public static $credentials;
-	public static $base = 'http://localhost:3000';
+	private static $base = 'http://localhost:3000';
 }
 ?>
