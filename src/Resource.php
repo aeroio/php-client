@@ -46,7 +46,7 @@ class Aero_Resource {
 			}
 		}
 
-		// $project->load_attributes($result);
+		// $project->loadAttributes($result);
 
 		return $array;
 	}
@@ -71,6 +71,23 @@ class Aero_Resource {
 		return new Aero_Projects($result);
 	}
 
+	public function save() {
+		$type = 'POST';
+
+		if ($this->id) $type = 'PUT';
+
+		$response = Aero_Connection::persist($type, $this);
+		print_r($response);
+	}
+
+	public function loadAttributes($params) {
+		foreach ($this as $key => $value) {
+			if (array_key_exists($key, $params)) {
+				$this->$key = $params[$key];
+			}
+		}
+	}
+
 	public function url() {
 		$resource = strtolower(get_called_class());
 		$resource = end(explode('_', $resource));
@@ -83,5 +100,6 @@ class Aero_Resource {
 
 		return $url .= '.json';
 	}
+
 }
 ?>

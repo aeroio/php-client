@@ -8,7 +8,8 @@ class Aero_Connection {
 			'type' => $type,
 			'url' => $url,
 			'auth_token' => self::$credentials['auth_token'],
-			'sid' => self::$credentials['sid']
+			'sid' => self::$credentials['sid'],
+			'attributes' => $resource
 		);
 
 		$request = new Aero_Request($params);

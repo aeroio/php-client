@@ -3,10 +3,17 @@ class Http {
 	public function execute($request) {
 		$auth_token = $request->auth_token;
 		$sid = $request->sid;
+		$query = $this->buildQuery($request);
 
         $this->setMethod($request->type);
         $this->setHeader("Authorization: Basic " . base64_encode("$sid:$auth_token") .
-                         "Connection: close\r\n");
+			"Connection: close\r\n" .
+			// This should not be here when PUT
+			"Content-type: application/x-www-form-urlencoded" .
+			"Content-length: " . strlen($query) . "\r\n");
+		if ($query) {
+			$this->setContent($query);
+		}
 
         $context = $this->buildContext($this->request);
 
@@ -54,6 +61,16 @@ class Http {
             return http_build_query($params[0]);
         }
     }
+	public function buildQuery($resource) {
+		$array = array();
+		foreach ($resource->attributes as $key => $value) {
+			if ($value) $array[$key] = $value;
+		}
+		unset($array['id']);
+		unset($array['created_at']);
+		unset($array['updated_at']);
+		return http_build_query($array);
+	}
 
 	public function buildContext($data) {
         return stream_context_create(array('http' => $data));

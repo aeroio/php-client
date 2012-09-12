@@ -11,10 +11,18 @@ class Aero_Projects extends Aero_Resource {
 
 Aero_Connection::$engine = new Http();
 Aero_Connection::$credentials = array(
-	'auth_token' => 'af5550a4f0efede2139568d45f0ce298',
-	'sid' => 'db2d7778130f7ff255774aa6c689fd6e'
+	'auth_token' => '52b8963d43b3f9081f58977b5aa3c110',
+	'sid' => '4ced755889ec99408be287e3ffb83b6b'
 );
 
-$project = Aero_Projects::all();
-print_r($project);
+$params = array(
+	'title' => 'Changed again',
+	'description' => 'Example Description'
+);
+$projects = Aero_Projects::first(27);
+$projects->loadAttributes($params);
+$projects->save();
+//$project = new Aero_Projects($params);
+
+//$project->save();
 ?>
