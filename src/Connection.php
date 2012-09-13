@@ -1,7 +1,7 @@
 <?php
 
 class Aero_Connection {
-	public static function persist($type, $resource) {
+	public static function persist($resource, $type) {
 		$url = self::$base . $resource->url();
 
 		$params = array(

@@ -14,6 +14,7 @@ class Aero_Resource {
 		}
 	}
 
+	// NOT NEEDED, because of public properties?
 	public function __set($property, $value) {
 		if (property_exists($this, $property)) {
 			$this->$property = $value;
@@ -22,19 +23,21 @@ class Aero_Resource {
 		return $this;
 	}
 
+	// NOT NEEDED?
 	public function __get($property) {
 		if (property_exists($this, $property)) {
 			return $this->property();
 		}
 	}
 
+	// TODO
 	public static function all() {
 		$type = 'GET';
 
-		$klass = get_called_class();
-		$resource = new $klass();
+		$class = get_called_class();
+		$resource = new $class();
 
-		$response = Aero_Connection::persist($type, $resource);
+		$response = Aero_Connection::persist($resource, $type);
 
 		$result = json_decode($response);
 
@@ -42,23 +45,22 @@ class Aero_Resource {
 		foreach ($result as $project) {
 			if (is_object($project)) {
 				$res = get_object_vars($project);
-				$array[] = new Aero_Projects($res);
+				$array[] = new $class($res);
 			}
 		}
-
-		// $project->loadAttributes($result);
 
 		return $array;
 	}
 
+	//TODO
 	public static function first($id) {
 		$type = 'GET';
 
-		$klass = get_called_class();
-		$resource = new $klass();
+		$class = get_called_class();
+		$resource = new $class();
 		$resource->id = $id;
 
-		$response = Aero_Connection::persist($type, $resource);
+		$response = Aero_Connection::persist($resource, $type);
 		
 		$result = json_decode($response);
 
@@ -66,18 +68,23 @@ class Aero_Resource {
 			$result = get_object_vars($result);
 		}
 
-		// $project->load_attributes($result);
-
-		return new Aero_Projects($result);
+		return new $class($result);
+		//$resource->loadAttributes($result);
+		//return $resource;
 	}
 
 	public function save() {
-		$type = 'POST';
+		$type = 'PUT';
 
-		if ($this->id) $type = 'PUT';
+		if ($this->is_new()) $type = 'POST';
 
-		$response = Aero_Connection::persist($type, $this);
-		print_r($response);
+		return $this->send($type);
+	}
+
+	public function destroy() {
+		$type = 'DELETE';
+
+		return $this->send($type);
 	}
 
 	public function loadAttributes($params) {
@@ -86,6 +93,12 @@ class Aero_Resource {
 				$this->$key = $params[$key];
 			}
 		}
+	}
+
+	public function is_new() {
+		if ($this->id) return false;
+
+		return true;
 	}
 
 	public function url() {
@@ -101,5 +114,8 @@ class Aero_Resource {
 		return $url .= '.json';
 	}
 
+	public function send($type) {
+		return Aero_Connection::persist($this, $type);
+	}
 }
 ?>

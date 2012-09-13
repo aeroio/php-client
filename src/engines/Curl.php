@@ -1,15 +1,16 @@
 <?php
 class Curl {
-	public $process;
+	private $process;
 
 	public function __construct() {
 		if (!function_exists('curl_init')) {
 			return false;
 		}
-		$this->process = $this->initialize();
 	}
 
 	public function execute($request) {
+		$this->process = $this->initialize();
+
 		$this->createProcess($request);
 
 		return $this->fetch($this->process);
@@ -17,6 +18,7 @@ class Curl {
 
 	public function fetch($process) {
 		$result = curl_exec($process);
+
 		curl_close($process);
 
 		return $result;
@@ -33,7 +35,22 @@ class Curl {
 		$this->setOption(CURLOPT_URL, $request->url);
 		$this->setOption(CURLOPT_RETURNTRANSFER, true);
 		$this->setOption(CURLOPT_HTTPHEADER, $headers);
-		$this->setOption(CURLOPT_HTTPGET, true);
+
+		switch($request->type) {
+			case 'POST':
+				$this->setOption(CURLOPT_POST, true);
+				$this->setOption(CURLOPT_POSTFIELDS, $request->attributes);
+				break;
+			case 'PUT':
+				$this->setOption(CURLOPT_CUSTOMREQUEST, "PUT");
+				$this->setOption(CURLOPT_POSTFIELDS, $request->attributes);
+				break;
+			case 'DELETE':
+				$this->setOption(CURLOPT_CUSTOMREQUEST, "DELETE");
+				break;
+			default:
+				$this->setOption(CURLOPT_HTTPGET, true);
+		}
 	}
 
 	public function initialize() {

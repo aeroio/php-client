@@ -3,7 +3,8 @@ class Http {
 	public function execute($request) {
 		$auth_token = $request->auth_token;
 		$sid = $request->sid;
-		$query = $this->buildQuery($request);
+
+		$query = $this->buildHttpQuery($request);
 
         $this->setMethod($request->type);
         $this->setHeader("Authorization: Basic " . base64_encode("$sid:$auth_token") .
@@ -48,27 +49,12 @@ class Http {
         $this->request['content'] = $data;
     }
 
-    public function buildHttpQuery($params) {
-        $multi = count(array_filter($params, 'is_array'));
-
-        if ($multi > 0) {
-            foreach ($params as $param) {
-                if (is_array($param)) {
-                    return http_build_query($param);
-                }
-            }
-        } else if (is_array($params[0])) {
-            return http_build_query($params[0]);
-        }
-    }
-	public function buildQuery($resource) {
+	public function buildHttpQuery($resource) {
 		$array = array();
 		foreach ($resource->attributes as $key => $value) {
 			if ($value) $array[$key] = $value;
 		}
-		unset($array['id']);
-		unset($array['created_at']);
-		unset($array['updated_at']);
+
 		return http_build_query($array);
 	}
 

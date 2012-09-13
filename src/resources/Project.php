@@ -9,20 +9,21 @@ class Aero_Projects extends Aero_Resource {
 	public $updated_at;
 }
 
-Aero_Connection::$engine = new Http();
+Aero_Connection::$engine = new Curl();
 Aero_Connection::$credentials = array(
 	'auth_token' => '52b8963d43b3f9081f58977b5aa3c110',
 	'sid' => '4ced755889ec99408be287e3ffb83b6b'
 );
 
 $params = array(
-	'title' => 'Changed again',
+	'title' => 'Example change not cadahagaking',
 	'description' => 'Example Description'
 );
-$projects = Aero_Projects::first(27);
-$projects->loadAttributes($params);
+$projects = Aero_Projects::first(33);
+$projects->title = 'entirely new';
 $projects->save();
-//$project = new Aero_Projects($params);
+//$projects->destroy();
+print_r(Aero_Projects::all());
 
 //$project->save();
 ?>
