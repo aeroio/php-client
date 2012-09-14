@@ -15,7 +15,7 @@ require_once 'PHPUnit/Framework/Assert/Functions.php';
 //
 // Require tested files here:
 //
-require_once 'src/AeroClient.php';
+require_once 'src/Resource.php';
 
 /**
  * Features context.

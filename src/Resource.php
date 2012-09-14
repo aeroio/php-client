@@ -3,9 +3,14 @@ require_once 'src/engines/Curl.php';
 require_once 'src/engines/Http.php';
 require_once 'src/Connection.php';
 require_once 'src/Request.php';
-require_once 'src/resources/Project.php';
 
 class Aero_Resource {
+	/**
+	 * Constructor, setting the options for the resource.
+	 *
+	 * @params array $attributes
+	 * @returns void
+	 */
 	public function __construct(Array $attributes = null) {
 		if ($attributes) {
 			foreach ($attributes as $attribute => $value) {
@@ -14,7 +19,7 @@ class Aero_Resource {
 		}
 	}
 
-	// NOT NEEDED, because of public properties?
+	// NOT NEEDED
 	public function __set($property, $value) {
 		if (property_exists($this, $property)) {
 			$this->$property = $value;
@@ -69,10 +74,15 @@ class Aero_Resource {
 		}
 
 		return new $class($result);
-		//$resource->loadAttributes($result);
+		//$resource->load_attributes($result);
 		//return $resource;
 	}
 
+	/**
+	 * Saves or updates resource, depending on the type.
+	 *
+	 * @returns object
+	 */
 	public function save() {
 		$type = 'PUT';
 
@@ -81,13 +91,24 @@ class Aero_Resource {
 		return $this->send($type);
 	}
 
+	/**
+	 * Destroys resource.
+	 *
+	 * @returns object
+	 */
 	public function destroy() {
 		$type = 'DELETE';
 
 		return $this->send($type);
 	}
 
-	public function loadAttributes($params) {
+	/**
+	 * Loads new or updated attributes of the resource.
+	 *
+	 * @params array $params
+	 * @returns void
+	 */
+	public function load_attributes($params) {
 		foreach ($this as $key => $value) {
 			if (array_key_exists($key, $params)) {
 				$this->$key = $params[$key];
@@ -95,12 +116,22 @@ class Aero_Resource {
 		}
 	}
 
+	/**
+	 * Checks if the resource is new.
+	 *
+	 * @returns bool
+	 */
 	public function is_new() {
 		if ($this->id) return false;
 
 		return true;
 	}
 
+	/**
+	 * Creates an appropriate url.
+	 *
+	 * @returns string $url
+	 */
 	public function url() {
 		$resource = strtolower(get_called_class());
 		$resource = end(explode('_', $resource));
@@ -114,6 +145,12 @@ class Aero_Resource {
 		return $url .= '.json';
 	}
 
+	/**
+	 * Sends the resource to the connection
+	 *
+	 * @params string $type
+	 * @returns object
+	 */
 	public function send($type) {
 		return Aero_Connection::persist($this, $type);
 	}

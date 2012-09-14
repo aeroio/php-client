@@ -1,29 +1,45 @@
 <?php
-class Curl {
+require_once 'Engine.php';
+
+class Curl implements Engine {
+	/**
+	 * The process to be executed.
+	 *
+	 * @var resource
+	 */
 	private $process;
 
+	/**
+	 * Contructor, checking if the engine could work.
+	 *
+	 * @returns void
+	 */
 	public function __construct() {
 		if (!function_exists('curl_init')) {
-			return false;
+			throw new Exception('cURL not installed');
 		}
+
+		$this->process = $this->initialize();
 	}
 
+	/**
+	 * Assembles and executes the process.
+	 *
+	 * @params object $request
+	 * @returns object
+	 */
 	public function execute($request) {
-		$this->process = $this->initialize();
-
 		$this->createProcess($request);
 
 		return $this->fetch($this->process);
 	}
 
-	public function fetch($process) {
-		$result = curl_exec($process);
-
-		curl_close($process);
-
-		return $result;
-	}
-
+	/**
+	 * Creates the whole request, which is to be sent.
+	 *
+	 * @params object $request
+	 * @returns void
+	 */
 	public function createProcess($request) {
 		$sid = $request->sid;
 		$auth_token = $request->auth_token;
@@ -53,16 +69,48 @@ class Curl {
 		}
 	}
 
+	/**
+	 * Process initialization.
+	 *
+	 * @returns resource
+	 */
 	public function initialize() {
 		return curl_init();
 	}
 
+	/**
+	 * Executes the process and fetches the data.
+	 *
+	 * @params resource $process
+	 * @returns object
+	 */
+	public function fetch($process) {
+		$result = curl_exec($process);
+
+		curl_close($process);
+
+		return $result;
+	}
+
+	/**
+	 * Gets the process information.
+	 *
+	 * @params string $name
+	 * @returns array
+	 */
 	public function getInfo($name = null) {
 		if ($name) return curl_getinfo($this->process, $name);
 
 		return curl_getinfo($this->process);
 	}
 
+	/**
+	 * Process options setter.
+	 *
+	 * @params string $name
+	 * @params mixed $value
+	 * @returns void
+	 */
 	public function setOption($name, $value) {
 		curl_setopt($this->process, $name, $value);
 	}

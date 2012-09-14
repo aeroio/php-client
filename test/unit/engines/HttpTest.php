@@ -16,7 +16,7 @@ class HttpTest extends PHPUnit_Framework_TestCase {
 		$sid = 'SID';
 		$expected = 'response';
 
-		$engine = $this->getMock('Http', array('fetch'));
+		$engine = $this->getMock('Http', array('fetch', 'buildHttpQuery'));
 
 		$engine->expects($this->once())
 			->method('fetch')
@@ -30,44 +30,19 @@ class HttpTest extends PHPUnit_Framework_TestCase {
         $result = $engine->execute($request);
 
         $expectedMethod = 'GET';
-		$expectedHeader = 'Authorization: Basic ' . base64_encode("$sid:$auth_token") .
-						  "Connection: close\r\n";
 
         $this->assertEquals($expectedMethod, $engine->getMethod());
-        $this->assertEquals($expectedHeader, $engine->getHeader());
 		$this->assertEquals($result, $expected);
 	}
 
 	public function testBuildHttpQueryWithArray() {
-        $request = new Http();
+        $engine = new Http();
 
-        $params = array(array('name' => 'Google', 'description' => 'Search engine'));
+		$params = $this->getMock('Aero_Request');
+		$params->attributes = array('name' => 'Google', 'description' => 'Search engine');
         $expected = 'name=Google&description=Search+engine';
 
-        $result = $request->buildHttpQuery($params);
-
-        $this->assertEquals($expected, $result);
-    }
-
-    public function testBuildHttpQueryWithMixedParams() {
-        $request = new Http();
-
-        $params = array(1, array('name' => 'Google', 'description' => 'Search engine'));
-        $expected = 'name=Google&description=Search+engine';
-
-        $result = $request->buildHttpQuery($params);
-
-        $this->assertEquals($expected, $result);
-    }
-
-
-    public function testBuildHttpQueryWithNumericParams() {
-        $request = new Http();
-
-        $params = array(1);
-        $expected = null;
-
-        $result = $request->buildHttpQuery($params);
+        $result = $engine->buildHttpQuery($params);
 
         $this->assertEquals($expected, $result);
     }

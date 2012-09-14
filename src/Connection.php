@@ -1,5 +1,4 @@
 <?php
-
 class Aero_Connection {
 	public static function persist($resource, $type) {
 		$url = self::$base . $resource->url();
@@ -14,9 +13,8 @@ class Aero_Connection {
 
 		$request = new Aero_Request($params);
 
-		$result = self::$engine->execute($request);
-
-		return $result;
+		$engine = new self::$engine();
+		return $engine->execute($request);
 	}
 
 	public static $engine;
