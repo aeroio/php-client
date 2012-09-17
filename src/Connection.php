@@ -14,7 +14,9 @@ class Aero_Connection {
 		$request = new Aero_Request($params);
 
 		$engine = new self::$engine();
-		return $engine->execute($request);
+		$response = $engine->execute($request);
+
+		return Aero_Response::handle($response);
 	}
 
 	public static $engine;

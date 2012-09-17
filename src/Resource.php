@@ -3,6 +3,7 @@ require_once 'src/engines/Curl.php';
 require_once 'src/engines/Http.php';
 require_once 'src/Connection.php';
 require_once 'src/Request.php';
+require_once 'src/Response.php';
 
 class Aero_Resource {
 	/**
@@ -36,46 +37,52 @@ class Aero_Resource {
 	}
 
 	// TODO
-	public static function all() {
+	public static function all($parent = null) {
 		$type = 'GET';
 
+		$params = array();
+		if ($parent) {
+			$value = strtolower(get_class($parent));
+			$value = end(explode('_', $value));
+
+			$params = array($value . '_id' => $parent->id);
+		}
+
 		$class = get_called_class();
-		$resource = new $class();
+		$resource = new $class($params);
 
 		$response = Aero_Connection::persist($resource, $type);
 
-		$result = json_decode($response);
-
-		$array = array();
-		foreach ($result as $project) {
-			if (is_object($project)) {
-				$res = get_object_vars($project);
-				$array[] = new $class($res);
-			}
+		foreach($response as $res) {
+			$array[] = new $class($res);
 		}
 
 		return $array;
 	}
 
 	//TODO
-	public static function first($id) {
+	public static function first($id, $parent = null) {
 		$type = 'GET';
 
+		$params = array();
+		if ($parent) {
+			$value = strtolower(get_class($parent));
+			$value = end(explode('_', $value));
+
+			$params = array($value . '_id' => $parent->id);
+		}
+
 		$class = get_called_class();
-		$resource = new $class();
+		$resource = new $class($params);
 		$resource->id = $id;
 
 		$response = Aero_Connection::persist($resource, $type);
-		
-		$result = json_decode($response);
 
-		if (is_object($result)) {
-			$result = get_object_vars($result);
+		if ($parent) {
+			$response['project_id'] = $parent->id;
 		}
-
-		return new $class($result);
-		//$resource->load_attributes($result);
-		//return $resource;
+		
+		return new $class($response);
 	}
 
 	/**
@@ -133,16 +140,47 @@ class Aero_Resource {
 	 * @returns string $url
 	 */
 	public function url() {
-		$resource = strtolower(get_called_class());
-		$resource = end(explode('_', $resource));
+		$url = "/api/v1";
 
-		$url = "/api/v1/$resource";
+		$url .= $this->add_parent();
+
+		$resource = $this->get_name(get_called_class());
+		$resource = $this->pluralize($resource);
+
+		$url .= "/$resource";
 
 		if ($this->id) {
 			$url .= "/$this->id";
 		}
 
 		return $url .= '.json';
+	}	
+
+	public function get_name($class) {
+		$resource = strtolower($class);
+
+		return end(explode('_', $resource));
+	}
+
+	public function pluralize($string) {
+		return $string . 's';
+	}
+
+	public function singularize($string) {
+		return substr_replace($string, "", -1);
+	}
+
+	public function add_parent() {
+		$attributes = get_object_vars($this);
+		
+		foreach ($attributes as $key => $value) {
+			$parent = strstr($key, '_id', true);
+
+			if ($parent) {
+				$parents = $this->pluralize($parent);
+				return "/$parents/$value";
+			}
+		}
 	}
 
 	/**

@@ -1,7 +1,7 @@
 <?php
 require_once 'src/Resource.php';
 
-class Aero_Projects extends Aero_Resource {
+class Aero_Project extends Aero_Resource {
 	public $id;
 	public $title;
 	public $description;
@@ -19,5 +19,4 @@ $params = array(
 	'title' => 'Lala Life is nice',
 	'description' => 'Example Description'
 );
-print_r(Aero_Projects::first(38));
 ?>
