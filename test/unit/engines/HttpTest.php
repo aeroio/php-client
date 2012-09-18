@@ -11,35 +11,35 @@ class HttpTest extends PHPUnit_Framework_TestCase {
         );
     }
 
-	public function testExecuteWithTokenAndSid() {
-		$auth_token = 'AUTH_TOKEN';
-		$sid = 'SID';
-		$expected = 'response';
+    public function testExecuteWithTokenAndSid() {
+        $auth_token = 'AUTH_TOKEN';
+        $sid = 'SID';
+        $expected = 'response';
 
-		$engine = $this->getMock('Http', array('fetch', 'buildHttpQuery'));
+        $engine = $this->getMock('Http', array('fetch', 'buildHttpQuery'));
 
-		$engine->expects($this->once())
-			->method('fetch')
-			->will($this->returnValue($expected));
+        $engine->expects($this->once())
+            ->method('fetch')
+            ->will($this->returnValue($expected));
 
-		$request->auth_token = $auth_token;
-		$request->sid = $sid;
-		$request->url = '/v1/projects';
-		$request->type = 'GET';
+        $request->auth_token = $auth_token;
+        $request->sid = $sid;
+        $request->url = '/v1/projects';
+        $request->type = 'GET';
 
         $result = $engine->execute($request);
 
         $expectedMethod = 'GET';
 
         $this->assertEquals($expectedMethod, $engine->getMethod());
-		$this->assertEquals($result, $expected);
-	}
+        $this->assertEquals($result, $expected);
+    }
 
-	public function testBuildHttpQueryWithArray() {
+    public function testBuildHttpQueryWithArray() {
         $engine = new Http();
 
-		$params = $this->getMock('Aero_Request');
-		$params->attributes = array('name' => 'Google', 'description' => 'Search engine');
+        $params = $this->getMock('Aero_Request');
+        $params->attributes = array('name' => 'Google', 'description' => 'Search engine');
         $expected = 'name=Google&description=Search+engine';
 
         $result = $engine->buildHttpQuery($params);
@@ -47,7 +47,7 @@ class HttpTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals($expected, $result);
     }
 
-	public function testSetAndGetHeader() {
+    public function testSetAndGetHeader() {
         $request = new Http();
 
         $expected = 'header';
@@ -78,7 +78,7 @@ class HttpTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals($expected, $result);
     }
 
-	public function testBuildContext() {
+    public function testBuildContext() {
         $request = new Http();
 
         $data = array(

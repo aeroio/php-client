@@ -2,126 +2,104 @@
 require_once 'src/Resource.php';
 
 class AeroResourceTest extends PHPUnit_Framework_TestCase {
-	public function testSetAndGetAttributes() {
-		$expected = 1;
-		$aero = new Test_Resource();
-		$aero->id = $expected;
-		$result = $aero->id;
+    public function testSetAndGetAttributes() {
+        $expected = 1;
+        $aero = new Test_Resource();
+        $aero->id = $expected;
+        $result = $aero->id;
 
-		$this->assertEquals($expected, $result);
-	}
+        $this->assertEquals($expected, $result);
+    }
 
-	public function testInitialization() {
-		$params = array('id' => 1);
-		$expected = $params['id'];
+    public function testInitialization() {
+        $params = array('id' => 1);
+        $expected = $params['id'];
 
-		$aero = new Test_Resource($params);
-		$result = $aero->id;
+        $aero = new Test_Resource($params);
+        $result = $aero->id;
 
-		$this->assertEquals($expected, $result);
-	}
+        $this->assertEquals($expected, $result);
+    }
 
-	public function testUrlGetWithId() {
-		$aero = new Test_Resource();
+    public function testLoadAttributes() {
+        $params = array(
+            'title' => 'Example',
+            'description' => 'Example Descriptions'
+        );
 
-		$id = 1;
-		$aero->id = $id;
-		$expected = "/api/v1/resource/$id.json";
+        $aero = new Test_Resource($params);
 
-		$result = $aero->url();
+        $expected = 'Changed Example';
+        $changed = array(
+            'title' => $expected
+        );
 
-		$this->assertEquals($expected, $result);
-	}
+        $aero->load_attributes($changed);
 
-	public function testUrlGetAll() {
-		$aero = new Test_Resource();
+        $this->assertEquals($expected, $aero->title);
+    }
 
-		$expected = "/api/v1/resource.json";
+    public function testIsNewNegative() {
+        $params = array(
+            'id' => 1
+        );
 
-		$result = $aero->url();
+        $aero = new Test_Resource($params);
 
-		$this->assertEquals($expected, $result);
-	}
+        $expected = false;
+        $result = $aero->is_new();
 
-	public function testLoadAttributes() {
-		$params = array(
-			'title' => 'Example',
-			'description' => 'Example Descriptions'
-		);
+        $this->assertEquals($expected, $result);
+    }
 
-		$aero = new Test_Resource($params);
+    public function testIsNewPositive() {
+        $aero = new Test_Resource();
 
-		$expected = 'Changed Example';
-		$changed = array(
-			'title' => $expected
-		);
+        $expected = true;
+        $result = $aero->is_new();
 
-		$aero->loadAttributes($changed);
+        $this->assertEquals($expected, $result);
+    }
 
-		$this->assertEquals($expected, $aero->title);
-	}
+    public function testSaveNew() {
+        $aero = $this->getMock('Test_Resource', array('send', 'is_new'));
+        $aero->expects($this->once())
+            ->method('send')
+            ->with('POST');
 
-	public function testIsNewNegative() {
-		$params = array(
-			'id' => 1
-		);
+        $aero->expects($this->once())
+            ->method('is_new')
+            ->will($this->returnValue(true));
 
-		$aero = new Test_Resource($params);
+        $aero->save();
+    }
 
-		$expected = false;
-		$result = $aero->is_new();
+    public function testSaveUpdate() {
+        $aero = $this->getMock('Test_Resource', array('send', 'is_new'));
+        $aero->expects($this->once())
+            ->method('send')
+            ->with('PUT');
 
-		$this->assertEquals($expected, $result);
-	}
+        $aero->expects($this->once())
+            ->method('is_new')
+            ->will($this->returnValue(false));
 
-	public function testIsNewPositive() {
-		$aero = new Test_Resource();
+        $aero->save();
+    }
 
-		$expected = true;
-		$result = $aero->is_new();
+    public function testDestroy() {
+        $aero = $this->getMock('Test_Resource', array('send'));
+        $aero->expects($this->once())
+            ->method('send')
+            ->with('DELETE');
 
-		$this->assertEquals($expected, $result);
-	}
-
-	public function testSaveNew() {
-		$aero = $this->getMock('Test_Resource', array('send', 'is_new'));
-		$aero->expects($this->once())
-			->method('send')
-			->with('POST');
-
-		$aero->expects($this->once())
-			->method('is_new')
-			->will($this->returnValue(true));
-
-		$aero->save();
-	}
-
-	public function testSaveUpdate() {
-		$aero = $this->getMock('Test_Resource', array('send', 'is_new'));
-		$aero->expects($this->once())
-			->method('send')
-			->with('PUT');
-
-		$aero->expects($this->once())
-			->method('is_new')
-			->will($this->returnValue(false));
-
-		$aero->save();
-	}
-
-	public function testDestroy() {
-		$aero = $this->getMock('Test_Resource', array('send'));
-		$aero->expects($this->once())
-			->method('send')
-			->with('DELETE');
-
-		$aero->destroy();
-	}
+        $aero->destroy();
+    }
 }
 
 class Test_Resource extends Aero_Resource {
-	public $id;
-	public $title;
-	public $description;
+    public $id;
+    public $title;
+    public $description;
 }
 ?>
