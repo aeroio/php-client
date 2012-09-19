@@ -4,7 +4,6 @@ require_once 'src/engines/Http.php';
 require_once 'src/Connection.php';
 require_once 'src/Request.php';
 require_once 'src/Response.php';
-require_once 'src/helpers/StringHelper.php';
 
 class Aero_Resource {
 
@@ -31,7 +30,7 @@ class Aero_Resource {
     }
 
 	public function __get($property) {
-		if (in_array($property, $this->attributes)) {
+		if (array_key_exists($property, $this->attributes)) {
 			return $this->attributes[$property];
 		}
 	}
@@ -48,7 +47,7 @@ class Aero_Resource {
      * @param object $parent
      * @return object
      */
-    public static function all($params = null) {
+    public static function all($params = array()) {
         $type = 'GET';
 
         $class = get_called_class();
@@ -78,7 +77,6 @@ class Aero_Resource {
 
         $class = get_called_class();
         $resource = new $class($params);
-		//$resource->attributes['id'] = $id;
         $resource->id = $id;
 
         $response = Aero_Connection::persist($resource, $type);
@@ -92,7 +90,7 @@ class Aero_Resource {
      * @return object
      */
     public function save() {
-        $type = 'update';
+        $type = 'PUT';
 
         if ($this->isNew()) $type = 'POST';
 

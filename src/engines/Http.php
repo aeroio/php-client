@@ -42,7 +42,6 @@ class Http implements Engine {
     public function fetch($url, $context) {
         $response = file_get_contents($url, false, $context);
 
-		print_r($http_response_header);
 		return $response;
     }
 
@@ -109,7 +108,9 @@ class Http implements Engine {
     public function buildHttpQuery($resource) {
         $array = array();
 
-        foreach ($resource->attributes as $key => $value) {
+		$attributes = $resource->resource->toArray();
+
+        foreach ($attributes as $key => $value) {
             if ($value) $array[$key] = $value;
         }
 

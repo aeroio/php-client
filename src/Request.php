@@ -11,13 +11,13 @@ class Aero_Request {
     protected $sid;
     protected $resource;
     const ROOT_URL = 'http://localhost:3000/api/v1';
+	const EXT = '.json';
 
     public function __construct($type, $resource, $credentials) {
         $this->type = $type;
         $this->setCredentials($credentials);
 
-		$this->url = self::ROOT_URL . $resource->path() . '.json';
-        //$this->url = UrlBuilder::assemble($resource);
+		$this->url = self::ROOT_URL . $resource->path() . self::EXT;
         $this->resource = $resource;
     }
 

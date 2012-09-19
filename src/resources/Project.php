@@ -19,10 +19,22 @@ class Aero_Project extends Aero_Resource {
 	public function path() {
 		$url = '/projects';
 
-		$id = $this->attributes['id'];
-		if ($id) $url .= "/$id";
+		if (isset($this->attributes['id'])) {
+			$id = $this->attributes['id'];
+			$url .= "/$id";
+		}
 
 		return $url;
+	}
+
+	public function toArray() {
+		$array = array();
+
+		foreach ($this->attributes as $key => $value) {
+			$array[$key] = $value;
+		}
+
+		return $array;
 	}
 }
 
@@ -32,9 +44,16 @@ Aero_Connection::$credentials = array(
 	'sid' => '4ced755889ec99408be287e3ffb83b6b'
 );
 
-$project = Aero_Project::first(2);
-print_r($project);
-print_r($project->created_at);
-
-
+//$project = Aero_Project::first(2);
+$params = array(
+	'title' => 'Pretty',
+	'descriptions' => 'Desc'
+);
+//$project = new Aero_Project($params);
+//$project->save();
+$project = Aero_Project::first(44);
+//print_r($project);
+$project->title = 'New title aaaexample';
+$project->save();
+print_r(Aero_Project::first(44));
 ?>

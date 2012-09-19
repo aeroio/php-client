@@ -1,8 +1,11 @@
 <?php
+
 require_once 'Engine.php';
 
 /**
- * TODO: add comment
+ * cURL engine.
+ *
+ * This engine executes the submited request.
  */
 class Curl implements Engine {
     /**
@@ -89,7 +92,6 @@ class Curl implements Engine {
      */
     public function fetch($process) {
         $result = curl_exec($process);
-		print_r($this->getInfo());
 
         curl_close($process);
 
