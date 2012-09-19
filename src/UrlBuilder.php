@@ -11,7 +11,7 @@ class UrlBuilder {
     const ROOT_URL = 'http://localhost:3000/api/v1';
 
     // TODO: move ot resource
-    const EXTENSION = '.json'
+    const EXTENSION = '.json';
 
     /**
      * Private constructor, so the class can't be instantiated.
@@ -20,13 +20,13 @@ class UrlBuilder {
      */
     private function __construct() {}
 
-    private function __clone()
+    private function __clone() {}
 
     /**
      * Assembles the url with the provided resource data and format.
      *
-     * @params object $resource
-     * @params string $format
+     * @param object $resource
+     * @param string $format
      * @returns string
      */
     public static function assemble($resource, $format = 'json') {
@@ -41,7 +41,7 @@ class UrlBuilder {
     /**
      * Turns the parent attributes into url string.
      *
-     * @params object $resource
+     * @param object $resource
      * @returns string
      */
     public static function add_parent($resource) {
@@ -60,7 +60,7 @@ class UrlBuilder {
     /**
      * Turns the current resource attributes into url.
      *
-     * @params object $resource
+     * @param object $resource
      * @returns string
      */
     public static function add_current($resource) {

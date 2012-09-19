@@ -34,7 +34,7 @@ class AeroResourceTest extends PHPUnit_Framework_TestCase {
             'title' => $expected
         );
 
-        $aero->load_attributes($changed);
+        $aero->loadAttributes($changed);
 
         $this->assertEquals($expected, $aero->title);
     }
@@ -47,7 +47,7 @@ class AeroResourceTest extends PHPUnit_Framework_TestCase {
         $aero = new Test_Resource($params);
 
         $expected = false;
-        $result = $aero->is_new();
+        $result = $aero->isNew();
 
         $this->assertEquals($expected, $result);
     }
@@ -56,32 +56,32 @@ class AeroResourceTest extends PHPUnit_Framework_TestCase {
         $aero = new Test_Resource();
 
         $expected = true;
-        $result = $aero->is_new();
+        $result = $aero->isNew();
 
         $this->assertEquals($expected, $result);
     }
 
     public function testSaveNew() {
-        $aero = $this->getMock('Test_Resource', array('send', 'is_new'));
+        $aero = $this->getMock('Test_Resource', array('send', 'isNew'));
         $aero->expects($this->once())
             ->method('send')
             ->with('POST');
 
         $aero->expects($this->once())
-            ->method('is_new')
+            ->method('isNew')
             ->will($this->returnValue(true));
 
         $aero->save();
     }
 
     public function testSaveUpdate() {
-        $aero = $this->getMock('Test_Resource', array('send', 'is_new'));
+        $aero = $this->getMock('Test_Resource', array('send', 'isNew'));
         $aero->expects($this->once())
             ->method('send')
             ->with('PUT');
 
         $aero->expects($this->once())
-            ->method('is_new')
+            ->method('isNew')
             ->will($this->returnValue(false));
 
         $aero->save();

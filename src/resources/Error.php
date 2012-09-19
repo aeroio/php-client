@@ -11,6 +11,16 @@ class Aero_Error extends Aero_Resource {
     public $created_at;
     public $updated_at;
 
+	protected $schema = array(
+		'id',
+		'project_id',
+		'message',
+		'occured',
+		'resolved',
+		'created_at',
+		'updated_at'
+	);
+
     // TODO: use this
     public function path() {
         return str_replace('/projects/:project_id/errors', ':project_id', $this->getProjectId());

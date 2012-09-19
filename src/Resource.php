@@ -21,20 +21,32 @@ class Aero_Resource {
      * TODO: check if static typing is available in PHP 5.2
      * TODO: use the schema
      *
-     * @params array $attributes
-     * @returns void
+     * @param array $attributes
+     * @return void
      */
     public function __construct(Array $attributes = array()) {
         foreach ($attributes as $attribute => $value) {
-            $this->$attribute = $value;
+            $this->attributes[$attribute] = $value;
         }
     }
+
+	public function __get($property) {
+		if (in_array($property, $this->attributes)) {
+			return $this->attributes[$property];
+		}
+	}
+
+	public function __set($property, $value) {
+		if (in_array($property, $this->schema)) {
+			$this->attributes[$property] = $value;
+		}
+	}
 
     /**
      * Gets all elements connected to a certain model.
      *
-     * @params object $parent
-     * @returns object
+     * @param object $parent
+     * @return object
      */
     public static function all($params = null) {
         $type = 'GET';
@@ -56,32 +68,33 @@ class Aero_Resource {
     /**
      * Gets the first element connected to a certain model.
      *
-     * @params number $id
-     * @params object $parent
+     * @param number $id
+     * @param object $parent
      * TODO: replace params with param and returns with return
      * @return object
      */
-    public static function first($id, $params = null) {
+    public static function first($id, $params = array()) {
         $type = 'GET';
 
         $class = get_called_class();
         $resource = new $class($params);
+		//$resource->attributes['id'] = $id;
         $resource->id = $id;
 
         $response = Aero_Connection::persist($resource, $type);
 
-        return new $class($response);
+		return new $class($response);
     }
 
     /**
      * Saves or updates resource, depending on the type.
      *
-     * @returns object
+     * @return object
      */
     public function save() {
         $type = 'update';
 
-        if ($this->is_new()) $type = 'POST';
+        if ($this->isNew()) $type = 'POST';
 
         return $this->send($type);
     }
@@ -89,7 +102,7 @@ class Aero_Resource {
     /**
      * Destroys resource.
      *
-     * @returns object
+     * @return object
      */
     public function destroy() {
         $type = 'DELETE';
@@ -100,10 +113,10 @@ class Aero_Resource {
     /**
      * Loads new or updated attributes of the resource.
      *
-     * @params array $params
-     * @returns void
+     * @param array $params
+     * @return void
      */
-    public function load_attributes($params) {
+    public function loadAttributes($params) {
         foreach ($this as $key => $value) {
             if (array_key_exists($key, $params)) {
                 $this->$key = $params[$key];
@@ -115,9 +128,9 @@ class Aero_Resource {
      * Checks if the resource is new.
      *
      * TODO: camelcase
-     * @returns bool
+     * @return bool
      */
-    public function is_new() {
+    public function isNew() {
         if ($this->id) return false;
 
         return true;
@@ -126,8 +139,8 @@ class Aero_Resource {
     /**
      * Sends the resource to the connection
      *
-     * @params string $type
-     * @returns object
+     * @param string $type
+     * @return object
      */
     public function send($type) {
         return Aero_Connection::persist($this, $type);

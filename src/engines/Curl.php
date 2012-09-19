@@ -8,20 +8,18 @@ class Curl implements Engine {
     /**
      * The process to be executed.
      *
-     * TODO: do not use private but protected
      * @var resource
      */
-    private $process;
+    protected $process;
 
     /**
      * Contructor, checking if the engine could work.
      *
-     * @returns void
+     * @return void
      */
     public function __construct() {
         if (!function_exists('curl_init')) {
-            // TODO: throw custom exception
-            throw new Exception('cURL not installed');
+            throw new CurlException('cURL not installed');
         }
 
         $this->process = $this->initialize();
@@ -30,8 +28,8 @@ class Curl implements Engine {
     /**
      * Assembles and executes the process.
      *
-     * @params object $request
-     * @returns object
+     * @param object $request
+     * @return object
      */
     public function execute($request) {
         $this->createProcess($request);
@@ -42,8 +40,8 @@ class Curl implements Engine {
     /**
      * Creates the whole request, which is to be sent.
      *
-     * @params object $request
-     * @returns void
+     * @param object $request
+     * @return void
      */
     public function createProcess($request) {
         $sid = $request->sid;
@@ -77,7 +75,7 @@ class Curl implements Engine {
     /**
      * Process initialization.
      *
-     * @returns resource
+     * @return resource
      */
     public function initialize() {
         return curl_init();
@@ -86,11 +84,12 @@ class Curl implements Engine {
     /**
      * Executes the process and fetches the data.
      *
-     * @params resource $process
-     * @returns object
+     * @param resource $process
+     * @return object
      */
     public function fetch($process) {
         $result = curl_exec($process);
+		print_r($this->getInfo());
 
         curl_close($process);
 
@@ -100,8 +99,8 @@ class Curl implements Engine {
     /**
      * Gets the process information.
      *
-     * @params string $name
-     * @returns array
+     * @param string $name
+     * @return array
      */
     public function getInfo($name = null) {
         if ($name) return curl_getinfo($this->process, $name);
@@ -112,9 +111,9 @@ class Curl implements Engine {
     /**
      * Process options setter.
      *
-     * @params string $name
-     * @params mixed $value
-     * @returns void
+     * @param string $name
+     * @param mixed $value
+     * @return void
      */
     public function setOption($name, $value) {
         curl_setopt($this->process, $name, $value);

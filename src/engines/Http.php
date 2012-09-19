@@ -9,8 +9,8 @@ class Http implements Engine {
     /**
      * Assembles and executes the request.
      *
-     * @params object $request
-     * @returns object
+     * @param object $request
+     * @return object
      */
     public function execute($request) {
         $sid = $request->sid;
@@ -35,18 +35,21 @@ class Http implements Engine {
     /**
      * Fetches the data.
      *
-     * @params string $url
-     * @params resource $context
-     * @returns object
+     * @param string $url
+     * @param resource $context
+     * @return object
      */
     public function fetch($url, $context) {
-        return file_get_contents($url, false, $context);
+        $response = file_get_contents($url, false, $context);
+
+		print_r($http_response_header);
+		return $response;
     }
 
     /**
      * Gets the request method.
      *
-     * @returns string
+     * @return string
      */
     public function getMethod() {
         return $this->request['method'];
@@ -55,7 +58,7 @@ class Http implements Engine {
     /**
      * Sets the request method.
      *
-     * @params string $type
+     * @param string $type
      */
     public function setMethod($type) {
         $this->request['method'] = strtoupper($type);
@@ -64,7 +67,7 @@ class Http implements Engine {
     /**
      * Gets the request header.
      *
-     * @returns string
+     * @return string
      */
     public function getHeader() {
         return $this->request['header'];
@@ -73,7 +76,7 @@ class Http implements Engine {
     /**
      * Sets the request header.
      *
-     * @params string $data
+     * @param string $data
      */
     public function setHeader($data) {
         $this->request['header'] = $data;
@@ -82,7 +85,7 @@ class Http implements Engine {
     /**
      * Gets the request content.
      *
-     * @returns string
+     * @return string
      */
     public function getContent() {
         return $this->request['content'];
@@ -91,7 +94,7 @@ class Http implements Engine {
     /**
      * Sets the request content.
      *
-     * @params string $data
+     * @param string $data
      */
     public function setContent($data) {
         $this->request['content'] = $data;
@@ -100,8 +103,8 @@ class Http implements Engine {
     /**
      * Builds the http query used as content in the request.
      *
-     * @params object $resource
-     * @returns string
+     * @param object $resource
+     * @return string
      */
     public function buildHttpQuery($resource) {
         $array = array();
@@ -116,8 +119,8 @@ class Http implements Engine {
     /**
      * Builds the context for the request.
      *
-     * @params array $data
-     * @returns response
+     * @param array $data
+     * @return response
      */
     public function buildContext($data) {
         return stream_context_create(array('http' => $data));
