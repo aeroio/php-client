@@ -3,7 +3,7 @@ require_once 'src/UrlBuilder.php';
 
 class Aero_Connection {
     public static function persist($resource, $type) {
-        $request = Aero_Request($type, $resource, $credentials);
+        $request = new Aero_Request($type, $resource, $credentials);
         //$url = UrlBuilder::assemble($resource);
 
         //$params = array(
@@ -25,4 +25,5 @@ class Aero_Connection {
     public static $engine;
     public static $credentials;
 }
+
 ?>

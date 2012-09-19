@@ -1,10 +1,14 @@
 <?php
 require_once 'Engine.php';
 
+/**
+ * TODO: add comment
+ */
 class Curl implements Engine {
     /**
      * The process to be executed.
      *
+     * TODO: do not use private but protected
      * @var resource
      */
     private $process;
@@ -16,6 +20,7 @@ class Curl implements Engine {
      */
     public function __construct() {
         if (!function_exists('curl_init')) {
+            // TODO: throw custom exception
             throw new Exception('cURL not installed');
         }
 

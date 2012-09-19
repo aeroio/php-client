@@ -46,7 +46,7 @@ class Validator {
      * @returns boolean
      */
     public static function max_length($attribute, $value) {
-        return strlen(self::$resource->$attribute) <= $value; 
+        return strlen(self::$resource->$attribute) <= $value;
     }
 
     /**
@@ -57,7 +57,7 @@ class Validator {
      * @returns boolean
      */
     public static function min_length($attribute, $value) {
-        return strlen(self::$resource->$attribute) >= $value; 
+        return strlen(self::$resource->$attribute) >= $value;
     }
 }
 ?>

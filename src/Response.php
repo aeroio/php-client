@@ -1,6 +1,9 @@
 <?php
+// TODO: add comment
 class Aero_Response {
     public static function handle($response) {
+        // TODO: handle server side errors
+        // https://github.com/rails/activeresource/blob/master/lib/active_resource/connection.rb#L129
         $result = json_decode($response);
 
         if (is_array($result)) {

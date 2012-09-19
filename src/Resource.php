@@ -7,17 +7,26 @@ require_once 'src/Response.php';
 require_once 'src/helpers/StringHelper.php';
 
 class Aero_Resource {
+
+    // TODO: use those instead of hardcoded string
+    const ALL = 0;
+    const FIRST = 1;
+    const UPDATE = 2;
+    const CREATE = 3;
+    const DESTROY = 4;
+
     /**
      * Constructor, setting the options for the resource.
+     *
+     * TODO: check if static typing is available in PHP 5.2
+     * TODO: use the schema
      *
      * @params array $attributes
      * @returns void
      */
-    public function __construct(Array $attributes = null) {
-        if ($attributes) {
-            foreach ($attributes as $attribute => $value) {
-                $this->$attribute = $value;
-            }
+    public function __construct(Array $attributes = array()) {
+        foreach ($attributes as $attribute => $value) {
+            $this->$attribute = $value;
         }
     }
 
@@ -36,6 +45,7 @@ class Aero_Resource {
         $response = Aero_Connection::persist($resource, $type);
 
         $array = array();
+
         foreach($response as $res) {
             $array[] = new $class($res);
         }
@@ -48,7 +58,8 @@ class Aero_Resource {
      *
      * @params number $id
      * @params object $parent
-     * @returns object
+     * TODO: replace params with param and returns with return
+     * @return object
      */
     public static function first($id, $params = null) {
         $type = 'GET';
@@ -68,7 +79,7 @@ class Aero_Resource {
      * @returns object
      */
     public function save() {
-        $type = 'PUT';
+        $type = 'update';
 
         if ($this->is_new()) $type = 'POST';
 
@@ -103,6 +114,7 @@ class Aero_Resource {
     /**
      * Checks if the resource is new.
      *
+     * TODO: camelcase
      * @returns bool
      */
     public function is_new() {

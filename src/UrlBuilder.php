@@ -2,12 +2,16 @@
 require_once 'src/helpers/StringHelper.php';
 
 class UrlBuilder {
+
     /**
      * Root url for the application.
      *
      * @var const
      */
-    const ROOT_URL = 'http://localhost:3000/api/v1'; 
+    const ROOT_URL = 'http://localhost:3000/api/v1';
+
+    // TODO: move ot resource
+    const EXTENSION = '.json'
 
     /**
      * Private constructor, so the class can't be instantiated.
@@ -15,6 +19,8 @@ class UrlBuilder {
      * @returns void
      */
     private function __construct() {}
+
+    private function __clone()
 
     /**
      * Assembles the url with the provided resource data and format.

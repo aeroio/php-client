@@ -1,6 +1,10 @@
 <?php
 require_once 'Engine.php';
 
+/**
+ * TODO: prefix everything with aero :(
+ *
+ */
 class Http implements Engine {
     /**
      * Assembles and executes the request.

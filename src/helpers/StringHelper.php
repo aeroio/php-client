@@ -5,7 +5,14 @@ class StringHelper {
      *
      * @returns void
      */
-    private function __construct() {}
+    private function __construct() {
+
+    }
+
+    /**
+     * TODO: clone should be private as well
+     */
+    private function __clone() {}
 
     /**
      * Simple pluralization of a singular word.

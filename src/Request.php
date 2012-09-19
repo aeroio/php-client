@@ -1,4 +1,8 @@
 <?php
+
+/**
+ * TODO: add docs
+ */
 class Aero_Request {
     //public function __construct(Array $attributes = null) {
         //if ($attributes) {
@@ -8,6 +12,7 @@ class Aero_Request {
         //}
     //}
 
+    // TODO: FUCK, figure out why it WORKS??
     protected $type;
     protected $url;
     protected $auth_token;
@@ -27,4 +32,5 @@ class Aero_Request {
         }
     }
 }
+
 ?>
