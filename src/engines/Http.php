@@ -1,13 +1,15 @@
 <?php
+
 require_once 'Engine.php';
 
 /**
  * TODO: prefix everything with aero :(
  *
  */
-class Http implements Engine {
+class Aero_Http implements Engine {
+
     /**
-     * Assembles and executes the request.
+     * Assemble and execute the request.
      *
      * @param object $request
      * @return object
@@ -18,7 +20,7 @@ class Http implements Engine {
 
         $query = $this->buildHttpQuery($request);
 
-        $this->setMethod($request->type);
+        $this->setMethod($request->method);
         $this->setHeader("Authorization: Basic " . base64_encode("$sid:$auth_token") . "\r\n" .
             "Connection: close\r\n" .
             "Content-type: application/x-www-form-urlencoded\r\n" .
@@ -33,20 +35,23 @@ class Http implements Engine {
     }
 
     /**
-     * Fetches the data.
+     * Fetch the data.
      *
      * @param string $url
      * @param resource $context
      * @return object
      */
     public function fetch($url, $context) {
-        $response = file_get_contents($url, false, $context);
+        $array = array();
 
-		return $response;
+        $array['response'] = file_get_contents($url, false, $context);
+        $array['header'] = $http_response_header;
+
+        return $array;
     }
 
     /**
-     * Gets the request method.
+     * Get the request method.
      *
      * @return string
      */
@@ -55,7 +60,7 @@ class Http implements Engine {
     }
 
     /**
-     * Sets the request method.
+     * Set the request method.
      *
      * @param string $type
      */
@@ -64,7 +69,7 @@ class Http implements Engine {
     }
 
     /**
-     * Gets the request header.
+     * Get the request header.
      *
      * @return string
      */
@@ -73,7 +78,7 @@ class Http implements Engine {
     }
 
     /**
-     * Sets the request header.
+     * Set the request header.
      *
      * @param string $data
      */
@@ -82,7 +87,7 @@ class Http implements Engine {
     }
 
     /**
-     * Gets the request content.
+     * Get the request content.
      *
      * @return string
      */
@@ -91,7 +96,7 @@ class Http implements Engine {
     }
 
     /**
-     * Sets the request content.
+     * Set the request content.
      *
      * @param string $data
      */
@@ -100,7 +105,7 @@ class Http implements Engine {
     }
 
     /**
-     * Builds the http query used as content in the request.
+     * Build the http query used as content in the request.
      *
      * @param object $resource
      * @return string
@@ -108,7 +113,7 @@ class Http implements Engine {
     public function buildHttpQuery($resource) {
         $array = array();
 
-		$attributes = $resource->resource->toArray();
+        $attributes = $resource->resource->toArray();
 
         foreach ($attributes as $key => $value) {
             if ($value) $array[$key] = $value;
@@ -118,7 +123,7 @@ class Http implements Engine {
     }
 
     /**
-     * Builds the context for the request.
+     * Build the context for the request.
      *
      * @param array $data
      * @return response
@@ -127,4 +132,5 @@ class Http implements Engine {
         return stream_context_create(array('http' => $data));
     }
 }
+
 ?>

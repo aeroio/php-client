@@ -6,6 +6,7 @@ class Validator {
      * @var object
      */
     public static $resource;
+	public $opa;
 
     /**
      * Checks if the validations rules apply.

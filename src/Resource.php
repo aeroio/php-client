@@ -1,24 +1,56 @@
 <?php
+
 require_once 'src/engines/Curl.php';
 require_once 'src/engines/Http.php';
 require_once 'src/Connection.php';
 require_once 'src/Request.php';
 require_once 'src/Response.php';
 
+/**
+ * Base Resource class.
+ *
+ * This class is extended by the actual resources. It contains the logic for
+ * the record that should be got, updated, created or destroyed.
+ */
 class Aero_Resource {
 
-    // TODO: use those instead of hardcoded string
-    const ALL = 0;
-    const FIRST = 1;
-    const UPDATE = 2;
-    const CREATE = 3;
-    const DESTROY = 4;
+    /**
+     * Request method when getting all records.
+     *
+     * @var string
+     */
+    const ALL = 'GET';
 
     /**
-     * Constructor, setting the options for the resource.
+     * Request method when getting a single record.
      *
-     * TODO: check if static typing is available in PHP 5.2
-     * TODO: use the schema
+     * @var string
+     */
+    const FIRST = 'GET';
+
+    /**
+     * Request method when updating an record.
+     *
+     * @var string
+     */
+    const UPDATE = 'PUT';
+
+    /**
+     * Request method when creating a new record.
+     *
+     * @var string
+     */
+    const CREATE = 'POST';
+
+    /**
+     * Request method when destroying a record.
+     *
+     * @var string
+     */
+    const DESTROY = 'DELETE';
+
+    /**
+     * Constructor, setting the attributes of the resource.
      *
      * @param array $attributes
      * @return void
@@ -29,31 +61,44 @@ class Aero_Resource {
         }
     }
 
-	public function __get($property) {
-		if (array_key_exists($property, $this->attributes)) {
-			return $this->attributes[$property];
-		}
-	}
-
-	public function __set($property, $value) {
-		if (in_array($property, $this->schema)) {
-			$this->attributes[$property] = $value;
-		}
-	}
+    /**
+     * Getting certain attribute from the attributes array, where the information
+     * for the object is contained.
+     *
+     * @param string $property
+     * @return mixed
+     */
+    public function __get($property) {
+        if (array_key_exists($property, $this->attributes)) {
+            return $this->attributes[$property];
+        }
+    }
 
     /**
-     * Gets all elements connected to a certain model.
+     * Check if the property that should be assigned exists in the schema
+     * of the object. If it exists, save it to the attributes array.
      *
-     * @param object $parent
+     * @param string $property
+     * @param mixed $value
+     * @return void
+     */
+    public function __set($property, $value) {
+        if (in_array($property, $this->schema)) {
+            $this->attributes[$property] = $value;
+        }
+    }
+
+    /**
+     * Get all records that the called resource has.
+     *
+     * @param object $params
      * @return object
      */
     public static function all($params = array()) {
-        $type = 'GET';
-
         $class = get_called_class();
         $resource = new $class($params);
 
-        $response = Aero_Connection::persist($resource, $type);
+        $response = Aero_Connection::persist($resource, self::ALL);
 
         $array = array();
 
@@ -65,67 +110,57 @@ class Aero_Resource {
     }
 
     /**
-     * Gets the first element connected to a certain model.
+     * Get the first element with the supplied identificator that the called
+     * resource has.
      *
      * @param number $id
      * @param object $parent
-     * TODO: replace params with param and returns with return
      * @return object
      */
     public static function first($id, $params = array()) {
-        $type = 'GET';
-
         $class = get_called_class();
         $resource = new $class($params);
         $resource->id = $id;
 
-        $response = Aero_Connection::persist($resource, $type);
+        $response = Aero_Connection::persist($resource, self::FIRST);
 
-		return new $class($response);
+        return new $class($response);
     }
 
     /**
-     * Saves or updates resource, depending on the type.
+     * Save or update resource, depending on its state. If it's new it will be
+     * saved, if not it will be updated.
      *
      * @return object
      */
     public function save() {
-        $type = 'PUT';
+        if ($this->isNew()) return $this->send(self::CREATE);
 
-        if ($this->isNew()) $type = 'POST';
-
-        return $this->send($type);
+        return $this->send(self::UPDATE);
     }
 
     /**
-     * Destroys resource.
+     * Destroy this record.
      *
      * @return object
      */
     public function destroy() {
-        $type = 'DELETE';
-
-        return $this->send($type);
+        return $this->send(self::DESTROY);
     }
 
     /**
-     * Loads new or updated attributes of the resource.
+     * Send the resource to the connection.
      *
-     * @param array $params
-     * @return void
+     * @param string $type
+     * @return object
      */
-    public function loadAttributes($params) {
-        foreach ($this as $key => $value) {
-            if (array_key_exists($key, $params)) {
-                $this->$key = $params[$key];
-            }
-        }
+    public function send($type) {
+        return Aero_Connection::persist($this, $type);
     }
 
     /**
-     * Checks if the resource is new.
+     * Check if the resource is new.
      *
-     * TODO: camelcase
      * @return bool
      */
     public function isNew() {
@@ -135,13 +170,19 @@ class Aero_Resource {
     }
 
     /**
-     * Sends the resource to the connection
+     * Return an array containing all of the attributes of this record.
      *
-     * @param string $type
-     * @return object
+     * @return array
      */
-    public function send($type) {
-        return Aero_Connection::persist($this, $type);
+    public function toArray() {
+        $array = array();
+
+        foreach ($this->attributes as $key => $value) {
+            $array[$key] = $value;
+        }
+
+        return $array;
     }
 }
+
 ?>

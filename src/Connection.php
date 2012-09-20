@@ -1,32 +1,43 @@
 <?php
 
 /**
- * This class connects the components and executes them in such way.
+ * Aero_Connection class.
+ *
+ * This class connects the components and executes them.
  */
 class Aero_Connection {
+
+    /**
+     * Base url of the application.
+     *
+     * @static string
+     */
+    public static $site = 'http://localhost:3000/api/v1';
+
     /**
      * Credentials to be used for user authorization.
      *
-     * @var array
+     * @static array
      */
     public static $credentials;
 
     /**
      * Engine to be used for the request execution.
      *
-     * @var object
+     * @static object
      */
     public static $engine;
 
     /**
-     * Create a request object, to be used by the engine to execute it.
+     * Create a request object, to be used by the engine for execution and
+     * handle the response.
      *
      * @param object $resource
      * @param string $type
      * @return object
      */
     public static function persist($resource, $type) {
-        $request = new Aero_Request($type, $resource, self::$credentials);
+        $request = new Aero_Request($type, $resource, self::$credentials, self::$site);
 
         $engine = new self::$engine();
         $response = $engine->execute($request);

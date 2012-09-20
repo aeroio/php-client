@@ -2,28 +2,49 @@
 
 require_once 'src/Resource.php';
 
+/**
+ * Aero_Error class.
+ *
+ * Resource that has coresponding records in the database, which are with
+ * the supplied in the schema format.
+ */
 class Aero_Error extends Aero_Resource {
-    public $id;
-    public $project_id;
-    public $message;
-    public $occured;
-    public $resolved;
-    public $created_at;
-    public $updated_at;
 
-	protected $schema = array(
-		'id',
-		'project_id',
-		'message',
-		'occured',
-		'resolved',
-		'created_at',
-		'updated_at'
-	);
+    /**
+     * Schema, containing the attributes that this record should have.
+     *
+     * @var array
+     */
+    protected $schema = array(
+        'id',
+        'project_id',
+        'message',
+        'occured',
+        'resolved',
+        'created_at',
+        'updated_at'
+    );
 
-    // TODO: use this
+    /**
+     * The actual attributes of the record with their values.
+     *
+     * @var array
+     */
+    protected $attributes = array();
+
+    /**
+     * Assemble the relative path that should be requested.
+     *
+     * @return string
+     */
     public function path() {
-        return str_replace('/projects/:project_id/errors', ':project_id', $this->getProjectId());
+        $url = str_replace(':project_id', $this->project_id, '/projects/:project_id/errors');
+
+        if ($this->id) {
+            $url .= "/$this->id";
+        }
+
+        return $url;
     }
 }
 
