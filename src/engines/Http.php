@@ -3,8 +3,10 @@
 require_once 'Engine.php';
 
 /**
- * TODO: prefix everything with aero :(
+ * Aero_Http class.
  *
+ * Engine that uses the file_get_contents method. It should be used
+ * when cURL is not available on the server.
  */
 class Aero_Http implements Engine {
 

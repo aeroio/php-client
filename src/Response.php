@@ -1,5 +1,7 @@
 <?php
 
+require_once 'Exceptions.php';
+
 /**
  * Aero_Response class.
  *
@@ -18,37 +20,37 @@ class Aero_Response {
 
         switch($code) {
             case 301:
-                throw new RedirectionException('This url redirects to another');
+                throw new RedirectionException('The data requested has been assigned new URI.');
             case 302:
-                throw new RedirectionException('This url redirects to another');
+                throw new RedirectionException('The data requested resides under differend URL.');
             case 303:
-                throw new RedirectionException('This url redirects to another');
+                throw new RedirectionException('Try another URL address or method.');
             case 307:
-                throw new RedirectionException('This url redirects to another');
+                throw new RedirectionException('The requested resource resides temporarily under a differend URI.');
             case ($code >= 200 && $code < 400):
                 return self::reshape($result['response']);
             case 400:
-                throw new BadRequestException('');
+                throw new BadRequestException('The request cannot be understood by the server due to malformed syntax.');
             case 401:
-                throw new UnauthorizedException('');
+                throw new UnauthorizedException('The request requires user authentication.');
             case 403:
-                throw new ForbiddenAccessException('');
+                throw new ForbiddenAccessException('The server understood the request, but is refusing to fulfill it.');
             case 404:
-                throw new ResourceNotFoundException('');
+                throw new ResourceNotFoundException('The server has not found anything matching the Request-URI.');
             case 405:
-                throw new MethodNotAllowedException('');
+                throw new MethodNotAllowedException('The method specified in the Request-Line is not allowed for this resource.');
             case 409:
-                throw new ResourceConflictException('');
+                throw new ResourceConflictException('The request could not be completed due to a conflict with the current state of the resource.');
             case 410:
-                throw new ResourceGoneException('');
+                throw new ResourceGoneException('The requested resource is no longer available at the server.');
             case 422:
-                throw new ResourceInvalidException('');
+                throw new ResourceInvalidException('The request was well formed, but was unable to be followed due to semantic errors.');
             case ($code >= 401 && $code <= 500):
-                throw new ClientError('');
+                throw new ClientException('');
             case ($code >= 500 && $code <= 600):
-                throw new ServerError('');
+                throw new ServerException('');
             default:
-                throw new ConnectionError('');
+                throw new ConnectionException('');
         }
     }
 
@@ -88,7 +90,7 @@ class Aero_Response {
         } else {
             preg_match('/\s+\d+\s+/', $response[0], $matches);
 
-            return $matches[0];
+            return trim($matches[0]);
         }
     }
 }

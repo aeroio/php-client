@@ -6,7 +6,7 @@ class CurlTest extends PHPUnit_Framework_TestCase {
         $request  = 'request';
         $expected = 'response';
 
-        $curl = $this->getMock('Curl', array('createProcess', 'fetch'));
+        $curl = $this->getMock('Aero_Curl', array('createProcess', 'fetch'));
 
         $curl->expects($this->once())
             ->method('createProcess')
@@ -21,7 +21,7 @@ class CurlTest extends PHPUnit_Framework_TestCase {
     }
 
     public function testGetInfoWholeProcess() {
-        $curl = new Curl();
+        $curl = new Aero_Curl();
         $result = $curl->getInfo();
 
         $this->assertEquals('array', gettype($result));
@@ -30,7 +30,7 @@ class CurlTest extends PHPUnit_Framework_TestCase {
     public function testGetInfoAttribute() {
         $expected = 'URL';
 
-        $curl = new Curl();
+        $curl = new Aero_Curl();
         $curl->setOption(CURLOPT_URL, $expected);
 
         $result = $curl->getInfo(CURLINFO_EFFECTIVE_URL);
@@ -39,7 +39,7 @@ class CurlTest extends PHPUnit_Framework_TestCase {
     }
 
     public function testSetOption() {
-        $curl = new Curl();
+        $curl = new Aero_Curl();
         $curl->initialize();
 
         $expected = 'url';

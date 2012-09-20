@@ -3,7 +3,7 @@ require_once 'src/engines/Http.php';
 
 class HttpTest extends PHPUnit_Framework_TestCase {
     public function testExecutePublicity() {
-        $reflector = new ReflectionMethod('Http', 'execute');
+        $reflector = new ReflectionMethod('Aero_Http', 'execute');
 
         $this->assertThat(
             true,
@@ -16,7 +16,7 @@ class HttpTest extends PHPUnit_Framework_TestCase {
         $sid = 'SID';
         $expected = 'response';
 
-        $engine = $this->getMock('Http', array('fetch', 'buildHttpQuery'));
+        $engine = $this->getMock('Aero_Http', array('fetch', 'buildHttpQuery'));
 
         $engine->expects($this->once())
             ->method('fetch')
@@ -25,7 +25,7 @@ class HttpTest extends PHPUnit_Framework_TestCase {
         $request->auth_token = $auth_token;
         $request->sid = $sid;
         $request->url = '/v1/projects';
-        $request->type = 'GET';
+        $request->method = 'GET';
 
         $result = $engine->execute($request);
 
@@ -35,20 +35,8 @@ class HttpTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals($result, $expected);
     }
 
-    public function testBuildHttpQueryWithArray() {
-        $engine = new Http();
-
-        $params = $this->getMock('Aero_Request');
-        $params->attributes = array('name' => 'Google', 'description' => 'Search engine');
-        $expected = 'name=Google&description=Search+engine';
-
-        $result = $engine->buildHttpQuery($params);
-
-        $this->assertEquals($expected, $result);
-    }
-
     public function testSetAndGetHeader() {
-        $request = new Http();
+        $request = new Aero_Http();
 
         $expected = 'header';
         $request->setHeader($expected);
@@ -58,7 +46,7 @@ class HttpTest extends PHPUnit_Framework_TestCase {
     }
 
     public function testSetAndGetContent() {
-        $request = new Http();
+        $request = new Aero_Http();
 
         $expected = 'content';
         $request->setContent($expected);
@@ -68,7 +56,7 @@ class HttpTest extends PHPUnit_Framework_TestCase {
     }
 
     public function testSetAndGetMethod() {
-        $request = new Http();
+        $request = new Aero_Http();
 
         $actual = 'method';
         $request->setMethod($actual);
@@ -79,7 +67,7 @@ class HttpTest extends PHPUnit_Framework_TestCase {
     }
 
     public function testBuildContext() {
-        $request = new Http();
+        $request = new Aero_Http();
 
         $data = array(
             'method' => 'POST',

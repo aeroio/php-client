@@ -21,24 +21,6 @@ class AeroResourceTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals($expected, $result);
     }
 
-    public function testLoadAttributes() {
-        $params = array(
-            'title' => 'Example',
-            'description' => 'Example Descriptions'
-        );
-
-        $aero = new Test_Resource($params);
-
-        $expected = 'Changed Example';
-        $changed = array(
-            'title' => $expected
-        );
-
-        $aero->loadAttributes($changed);
-
-        $this->assertEquals($expected, $aero->title);
-    }
-
     public function testIsNewNegative() {
         $params = array(
             'id' => 1
@@ -98,8 +80,11 @@ class AeroResourceTest extends PHPUnit_Framework_TestCase {
 }
 
 class Test_Resource extends Aero_Resource {
-    public $id;
-    public $title;
-    public $description;
+	public $schema = array(
+		'id',
+		'title',
+		'description'
+	);
+	public $attributes = array();
 }
 ?>

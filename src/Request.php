@@ -50,7 +50,7 @@ class Aero_Request {
     protected $resource;
 
     /**
-     * Assemble the request.
+     * Assemble the request with the provided data.
      *
      * @param string $method
      * @param object $resource

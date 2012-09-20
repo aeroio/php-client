@@ -46,12 +46,4 @@ class Aero_Project extends Aero_Resource {
     }
 }
 
-Aero_Connection::$engine = new Aero_Http();
-Aero_Connection::$credentials = array(
-    'auth_token' => '52b8963d43b3f9081f58977b5aa3c110',
-    'sid' => '4ced755889ec99408be287e3ffb83b6b'
-);
-
-$project = Aero_Project::all();
-print_r($project);
 ?>
