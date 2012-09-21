@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * Aero.io API client for PHP
+ *
+ * @copyright Copyright 2012, aero.io (http://aero.io)
+ * @license The MIT License
+ */
+
 require_once 'src/engines/Curl.php';
 require_once 'src/engines/Http.php';
 require_once 'src/Connection.php';

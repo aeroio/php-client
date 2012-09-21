@@ -1,6 +1,13 @@
 <?php
 
 /**
+ * Aero.io API client for PHP
+ *
+ * @copyright Copyright 2012, aero.io (http://aero.io)
+ * @license The MIT License
+ */
+
+/**
  * Aero_Request class.
  *
  * Assemble the request object with the provided data.
