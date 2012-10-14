@@ -1,8 +1,16 @@
 <?php
+
+/**
+ * Aero.io API client for PHP
+ *
+ * @copyright Copyright 2012, aero.io (http://aero.io)
+ * @license The MIT License
+ */
+
 require_once 'src/validators/Validator.php';
 
-class ValidatorTest extends PHPUnit_Framework_TestCase {
-    public function testValidatePresence() {
+class AeroValidatorTest extends PHPUnit_Framework_TestCase {
+    public function testValidatePresent() {
         $test = new ValidationResourceTest();
 
         $test->validate = array(
@@ -11,12 +19,13 @@ class ValidatorTest extends PHPUnit_Framework_TestCase {
             ),
         );
 
-        $this->assertFalse(Validator::is_valid($test));
+        $this->assertFalse(Aero_Validator::is_valid($test));
     }
 
-    public function testValidateNotPresence() {
+    public function testValidateNotPresent() {
         $test = new ValidationResourceTest();
         $test->title = 'present';
+        $test->description = null;
 
         $test->validate = array(
             'title' => array(
@@ -24,59 +33,7 @@ class ValidatorTest extends PHPUnit_Framework_TestCase {
             ),
         );
 
-        $this->assertTrue(Validator::is_valid($test));
-    }
-
-    public function testValidateMaxLengthOver() {
-        $test = new ValidationResourceTest();
-        $test->title = 'present';
-
-        $test->validate = array(
-            'title' => array(
-                'max_length' => 5
-            ),
-        );
-
-        $this->assertFalse(Validator::is_valid($test));
-    }
-
-    public function testValidateMaxLengthUnder() {
-        $test = new ValidationResourceTest();
-        $test->title = 'present';
-
-        $test->validate = array(
-            'title' => array(
-                'max_length' => 10
-            ),
-        );
-
-        $this->assertTrue(Validator::is_valid($test));
-    }
-
-    public function testValidateMinLengthOver() {
-        $test = new ValidationResourceTest();
-        $test->title = 'present';
-
-        $test->validate = array(
-            'title' => array(
-                'min_length' => 5
-            ),
-        );
-
-        $this->assertTrue(Validator::is_valid($test));
-    }
-
-    public function testValidateMinLengthUnder() {
-        $test = new ValidationResourceTest();
-        $test->title = 'present';
-
-        $test->validate = array(
-            'title' => array(
-                'min_length' => 10
-            ),
-        );
-
-        $this->assertFalse(Validator::is_valid($test));
+        $this->assertTrue(Aero_Validator::is_valid($test));
     }
 }
 

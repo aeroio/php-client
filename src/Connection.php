@@ -1,28 +1,56 @@
 <?php
-require_once 'src/UrlBuilder.php';
 
+/**
+ * Aero.io API client for PHP
+ *
+ * @copyright Copyright 2012, aero.io (http://aero.io)
+ * @license The MIT License
+ */
+
+/**
+ * Aero_Connection class.
+ *
+ * This class connects the components and executes them.
+ */
 class Aero_Connection {
+
+    /**
+     * Base url of the application.
+     *
+     * @static string
+     */
+    public static $site = 'https://aero.io/api/v1';
+
+    /**
+     * Credentials to be used for user authorization.
+     *
+     * @static array
+     */
+    public static $credentials;
+
+    /**
+     * Engine to be used for the request execution.
+     *
+     * @static object
+     */
+    public static $engine;
+
+    /**
+     * Create a request object, to be used by the engine for execution and
+     * handle the response.
+     *
+     * @param object $resource
+     * @param string $type
+     * @return object
+     */
     public static function persist($resource, $type) {
-        $request = Aero_Request($type, $resource, $credentials);
-        //$url = UrlBuilder::assemble($resource);
-
-        //$params = array(
-            //'type' => $type,
-            //'url' => $url,
-            //'auth_token' => self::$credentials['auth_token'],
-            //'sid' => self::$credentials['sid'],
-            //'attributes' => $resource
-        //);
-
-        //$request = new Aero_Request($params);
+        $request = new Aero_Request($type, $resource, self::$credentials, self::$site);
 
         $engine = new self::$engine();
         $response = $engine->execute($request);
 
         return Aero_Response::handle($response);
     }
-
-    public static $engine;
-    public static $credentials;
 }
+
 ?>

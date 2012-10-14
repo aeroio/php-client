@@ -1,3 +1,5 @@
+[![Build Status](https://secure.travis-ci.org/aeroio/php-client.png)](http://travis-ci.org/aeroio/php-client)
+
 PHP Client for Aero.cx
 ====================================
 

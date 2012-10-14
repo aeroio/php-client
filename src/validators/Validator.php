@@ -1,5 +1,19 @@
 <?php
-class Validator {
+
+/**
+ * Aero.io API client for PHP
+ *
+ * @copyright Copyright 2012, aero.io (http://aero.io)
+ * @license The MIT License
+ */
+
+/**
+ * Aero_Validator class.
+ *
+ * Validate the resource.
+ */
+class Aero_Validator {
+
     /**
      * Holder for the object to be validated.
      *
@@ -16,15 +30,15 @@ class Validator {
     public static function is_valid($resource) {
         self::$resource = $resource;
 
-        $valid = true;
+        $array = array();
 
         foreach ($resource->validate as $attribute => $rule) {
             foreach($rule as $name => $value) {
-                $valid = self::$name($attribute, $value);
+                $array[] = self::$name($attribute, $value);
             }
         }
 
-        return $valid;
+        return !in_array(false, $array);
     }
 
     /**
@@ -37,27 +51,6 @@ class Validator {
     public static function presence($attribute, $value) {
         return isset(self::$resource->$attribute) == true;
     }
-
-    /**
-     * Checks if certain attributes is in defined maximum range.
-     *
-     * @params string $attribute
-     * @params boolean $value
-     * @returns boolean
-     */
-    public static function max_length($attribute, $value) {
-        return strlen(self::$resource->$attribute) <= $value; 
-    }
-
-    /**
-     * Checks if certain attributes is in defined minimum range.
-     *
-     * @params string $attribute
-     * @params boolean $value
-     * @returns boolean
-     */
-    public static function min_length($attribute, $value) {
-        return strlen(self::$resource->$attribute) >= $value; 
-    }
 }
+
 ?>

@@ -1,20 +1,42 @@
 <?php
+
+/**
+ * Aero.io API client for PHP
+ *
+ * @copyright Copyright 2012, aero.io (http://aero.io)
+ * @license The MIT License
+ */
+
 require_once 'Engine.php';
 
-class Http implements Engine {
+/**
+ * Aero_Http class.
+ *
+ * Engine that uses the file_get_contents method. It should be used
+ * when cURL is not available on the server.
+ */
+class Aero_Http implements Engine {
+
     /**
-     * Assembles and executes the request.
+     * Options of the request.
      *
-     * @params object $request
-     * @returns object
+     * @var array
+     */
+    public $request = array();
+
+    /**
+     * Assemble and execute the request.
+     *
+     * @param object $request
+     * @return object
      */
     public function execute($request) {
-        $sid = $request->sid;
-        $auth_token = $request->auth_token;
+        $sid = $request->getSid();
+        $auth_token = $request->getAuthToken();
 
         $query = $this->buildHttpQuery($request);
 
-        $this->setMethod($request->type);
+        $this->setMethod($request->getMethod());
         $this->setHeader("Authorization: Basic " . base64_encode("$sid:$auth_token") . "\r\n" .
             "Connection: close\r\n" .
             "Content-type: application/x-www-form-urlencoded\r\n" .
@@ -25,84 +47,91 @@ class Http implements Engine {
 
         $context = $this->buildContext($this->request);
 
-        return $this->fetch($request->url, $context);
+        return $this->fetch($request->getUrl(), $context);
     }
 
     /**
-     * Fetches the data.
+     * Fetch the data.
      *
-     * @params string $url
-     * @params resource $context
-     * @returns object
+     * @param string $url
+     * @param resource $context
+     * @return object
      */
     public function fetch($url, $context) {
-        return file_get_contents($url, false, $context);
+        $array = array();
+
+        $array['response'] = file_get_contents($url, false, $context);
+        $array['header'] = $http_response_header;
+
+        return $array;
     }
 
     /**
-     * Gets the request method.
+     * Get the request method.
      *
-     * @returns string
+     * @return string
      */
     public function getMethod() {
         return $this->request['method'];
     }
 
     /**
-     * Sets the request method.
+     * Set the request method.
      *
-     * @params string $type
+     * @param string $type
      */
     public function setMethod($type) {
         $this->request['method'] = strtoupper($type);
     }
 
     /**
-     * Gets the request header.
+     * Get the request header.
      *
-     * @returns string
+     * @return string
      */
     public function getHeader() {
         return $this->request['header'];
     }
 
     /**
-     * Sets the request header.
+     * Set the request header.
      *
-     * @params string $data
+     * @param string $data
      */
     public function setHeader($data) {
         $this->request['header'] = $data;
     }
 
     /**
-     * Gets the request content.
+     * Get the request content.
      *
-     * @returns string
+     * @return string
      */
     public function getContent() {
         return $this->request['content'];
     }
 
     /**
-     * Sets the request content.
+     * Set the request content.
      *
-     * @params string $data
+     * @param string $data
      */
     public function setContent($data) {
         $this->request['content'] = $data;
     }
 
     /**
-     * Builds the http query used as content in the request.
+     * Build the http query used as content in the request.
      *
-     * @params object $resource
-     * @returns string
+     * @param object $resource
+     * @return string
      */
     public function buildHttpQuery($resource) {
         $array = array();
 
-        foreach ($resource->attributes as $key => $value) {
+        $attributes = $resource->getResource()->toArray();
+
+        foreach ($attributes as $key => $value) {
             if ($value) $array[$key] = $value;
         }
 
@@ -110,13 +139,14 @@ class Http implements Engine {
     }
 
     /**
-     * Builds the context for the request.
+     * Build the context for the request.
      *
-     * @params array $data
-     * @returns response
+     * @param array $data
+     * @return response
      */
     public function buildContext($data) {
         return stream_context_create(array('http' => $data));
     }
 }
+
 ?>

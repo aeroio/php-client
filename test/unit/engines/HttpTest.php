@@ -1,9 +1,17 @@
 <?php
+
+/**
+ * Aero.io API client for PHP
+ *
+ * @copyright Copyright 2012, aero.io (http://aero.io)
+ * @license The MIT License
+ */
+
 require_once 'src/engines/Http.php';
 
 class HttpTest extends PHPUnit_Framework_TestCase {
     public function testExecutePublicity() {
-        $reflector = new ReflectionMethod('Http', 'execute');
+        $reflector = new ReflectionMethod('Aero_Http', 'execute');
 
         $this->assertThat(
             true,
@@ -15,40 +23,57 @@ class HttpTest extends PHPUnit_Framework_TestCase {
         $auth_token = 'AUTH_TOKEN';
         $sid = 'SID';
         $expected = 'response';
+        $method = 'GET';
+        $url = '/v1/projects';
+        $context = 'context';
 
-        $engine = $this->getMock('Http', array('fetch', 'buildHttpQuery'));
+        $engine = $this->getMock('Aero_Http', array(
+            'fetch',
+            'buildHttpQuery',
+            'buildContext',
+            'setMethod',
+            'setHeader',
+            'setContent'
+        ));
 
+        $engine->expects($this->once())
+            ->method('buildHttpQuery')
+            ->will($this->returnValue(true));
+        $engine->expects($this->once())
+            ->method('buildContext')
+            ->will($this->returnValue($context));
         $engine->expects($this->once())
             ->method('fetch')
             ->will($this->returnValue($expected));
+        $engine->request = 'request';
 
-        $request->auth_token = $auth_token;
-        $request->sid = $sid;
-        $request->url = '/v1/projects';
-        $request->type = 'GET';
+        $request = $this->getMock('AeroRequest', array(
+            'getSid',
+            'getAuthToken',
+            'getMethod',
+            'getUrl'
+        ));
+
+        $request->expects($this->once())
+            ->method('getSid')
+            ->will($this->returnValue($sid));
+        $request->expects($this->once())
+            ->method('getAuthToken')
+            ->will($this->returnValue($auth_token));
+        $request->expects($this->once())
+            ->method('getMethod')
+            ->will($this->returnValue($method));
+        $request->expects($this->once())
+            ->method('getUrl')
+            ->will($this->returnValue($url));
 
         $result = $engine->execute($request);
 
-        $expectedMethod = 'GET';
-
-        $this->assertEquals($expectedMethod, $engine->getMethod());
         $this->assertEquals($result, $expected);
     }
 
-    public function testBuildHttpQueryWithArray() {
-        $engine = new Http();
-
-        $params = $this->getMock('Aero_Request');
-        $params->attributes = array('name' => 'Google', 'description' => 'Search engine');
-        $expected = 'name=Google&description=Search+engine';
-
-        $result = $engine->buildHttpQuery($params);
-
-        $this->assertEquals($expected, $result);
-    }
-
     public function testSetAndGetHeader() {
-        $request = new Http();
+        $request = new Aero_Http();
 
         $expected = 'header';
         $request->setHeader($expected);
@@ -58,7 +83,7 @@ class HttpTest extends PHPUnit_Framework_TestCase {
     }
 
     public function testSetAndGetContent() {
-        $request = new Http();
+        $request = new Aero_Http();
 
         $expected = 'content';
         $request->setContent($expected);
@@ -68,7 +93,7 @@ class HttpTest extends PHPUnit_Framework_TestCase {
     }
 
     public function testSetAndGetMethod() {
-        $request = new Http();
+        $request = new Aero_Http();
 
         $actual = 'method';
         $request->setMethod($actual);
@@ -79,7 +104,7 @@ class HttpTest extends PHPUnit_Framework_TestCase {
     }
 
     public function testBuildContext() {
-        $request = new Http();
+        $request = new Aero_Http();
 
         $data = array(
             'method' => 'POST',
