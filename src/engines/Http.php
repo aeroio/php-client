@@ -18,6 +18,13 @@ require_once 'Engine.php';
 class Aero_Http implements Engine {
 
     /**
+     * Options of the request.
+     *
+     * @var array
+     */
+    public $request = array();
+
+    /**
      * Assemble and execute the request.
      *
      * @param object $request
