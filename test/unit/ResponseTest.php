@@ -102,7 +102,7 @@ class ResponseTest extends PHPUnit_Framework_TestCase {
 
         Aero_Response::handle($response);
     }
-    
+
     public function testRaiseForbiddenAccessExceptionWhen403() {
         $this->setExpectedException('ForbiddenAccessException');
 
@@ -110,7 +110,7 @@ class ResponseTest extends PHPUnit_Framework_TestCase {
 
         Aero_Response::handle($response);
     }
-    
+
     public function testRaiseResourceNotFoundExceptionWhen404() {
         $this->setExpectedException('ResourceNotFoundException');
 
@@ -118,7 +118,7 @@ class ResponseTest extends PHPUnit_Framework_TestCase {
 
         Aero_Response::handle($response);
     }
-    
+
     public function testRaiseMethodNotAllowedExceptionWhen405() {
         $this->setExpectedException('MethodNotAllowedException');
 

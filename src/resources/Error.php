@@ -50,7 +50,7 @@ class Aero_Error extends Aero_Resource {
      * @return string
      */
     public function path() {
-    $url = '/projects/' . $this->project_id . '/errors';
+        $url = '/projects/' . $this->project_id . '/errors';
 
         if ($this->id) {
             $url .= "/$this->id";

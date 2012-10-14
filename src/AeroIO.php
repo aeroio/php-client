@@ -7,6 +7,7 @@
  * @license The MIT License
  */
 
+require_once 'src/ExceptionHandler.php';
 require_once 'src/Connection.php';
 require_once 'src/engines/Curl.php';
 
@@ -82,7 +83,7 @@ class AeroIO {
      *
      * @return void
      */
-    public static function setOptions() {
+    protected static function setOptions() {
         Aero_Connection::$site = self::$site;
         Aero_Connection::$engine = self::$engine;
         Aero_Connection::$credentials = array(
@@ -93,3 +94,4 @@ class AeroIO {
 }
 
 ?>
+

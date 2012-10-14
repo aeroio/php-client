@@ -21,11 +21,11 @@ class AeroRequestTest extends PHPUnit_Framework_TestCase {
 
         $request = new Aero_Request($method, $resource, $credentials, $site);
 
-        $this->assertEquals('URL/PATH.json', $request->url);
-        $this->assertEquals($method, $request->method);
-        $this->assertEquals($credentials['auth_token'], $request->auth_token);
-        $this->assertEquals($credentials['sid'], $request->sid);
-        $this->assertEquals($resource, $request->resource);
+        $this->assertEquals('URL/PATH.json', $request->getUrl());
+        $this->assertEquals($method, $request->getMethod());
+        $this->assertEquals($credentials['auth_token'], $request->getAuthToken());
+        $this->assertEquals($credentials['sid'], $request->getSid());
+        $this->assertEquals($resource, $request->getResource());
     }
 }
 

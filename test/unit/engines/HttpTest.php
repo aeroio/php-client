@@ -23,23 +23,49 @@ class HttpTest extends PHPUnit_Framework_TestCase {
         $auth_token = 'AUTH_TOKEN';
         $sid = 'SID';
         $expected = 'response';
+        $method = 'GET';
+        $url = '/v1/projects';
+        $context = 'context';
 
-        $engine = $this->getMock('Aero_Http', array('fetch', 'buildHttpQuery'));
+        $engine = $this->getMock('Aero_Http', array(
+            'fetch',
+            'buildHttpQuery',
+            'buildContext'
+        ));
 
+        $engine->expects($this->once())
+            ->method('buildHttpQuery')
+            ->will($this->returnValue(true));
+        $engine->expects($this->once())
+            ->method('buildContext')
+            ->will($this->returnValue($context));
         $engine->expects($this->once())
             ->method('fetch')
             ->will($this->returnValue($expected));
+        $engine->request = 'request';
 
-        $request->auth_token = $auth_token;
-        $request->sid = $sid;
-        $request->url = '/v1/projects';
-        $request->method = 'GET';
+        $request = $this->getMock('AeroRequest', array(
+            'getSid',
+            'getAuthToken',
+            'getMethod',
+            'getUrl'
+        ));
+
+        $request->expects($this->once())
+            ->method('getSid')
+            ->will($this->returnValue($sid));
+        $request->expects($this->once())
+            ->method('getAuthToken')
+            ->will($this->returnValue($auth_token));
+        $request->expects($this->once())
+            ->method('getMethod')
+            ->will($this->returnValue($method));
+        $request->expects($this->once())
+            ->method('getUrl')
+            ->will($this->returnValue($url));
 
         $result = $engine->execute($request);
 
-        $expectedMethod = 'GET';
-
-        $this->assertEquals($expectedMethod, $engine->getMethod());
         $this->assertEquals($result, $expected);
     }
 
