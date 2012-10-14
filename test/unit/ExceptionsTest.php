@@ -10,125 +10,125 @@
 require_once 'src/Exceptions.php';
 
 class ExceptionsTest extends PHPUnit_Framework_TestCase {
-	public function testClientException() {
-		$this->setExpectedException('ClientException');
+    public function testClientException() {
+        $this->setExpectedException('ClientException');
 
-		$exception = new ClientException('message');
+        $exception = new ClientException('message');
 
-		$this->assertTrue($exception instanceof Exception);
+        $this->assertTrue($exception instanceof Exception);
 
-		throw $exception;
-	}
+        throw $exception;
+    }
 
-	public function testServerException() {
-		$this->setExpectedException('ServerException');
+    public function testServerException() {
+        $this->setExpectedException('ServerException');
 
-		$exception = new ServerException('message');
+        $exception = new ServerException('message');
 
-		$this->assertTrue($exception instanceof Exception);
+        $this->assertTrue($exception instanceof Exception);
 
-		throw $exception;
-	}
+        throw $exception;
+    }
 
-	public function testConnectionException() {
-		$this->setExpectedException('ConnectionException');
+    public function testConnectionException() {
+        $this->setExpectedException('ConnectionException');
 
-		$exception = new ConnectionException('message');
+        $exception = new ConnectionException('message');
 
-		$this->assertTrue($exception instanceof Exception);
+        $this->assertTrue($exception instanceof Exception);
 
-		throw $exception;
-	}
+        throw $exception;
+    }
 
-	public function testRedirectionException() {
-		$this->setExpectedException('RedirectionException');
+    public function testRedirectionException() {
+        $this->setExpectedException('RedirectionException');
 
-		$exception = new RedirectionException('message');
+        $exception = new RedirectionException('message');
 
-		$this->assertTrue($exception instanceof ConnectionException);
+        $this->assertTrue($exception instanceof ConnectionException);
 
-		throw $exception;
-	}
+        throw $exception;
+    }
 
-	public function testBadRequestException() {
-		$this->setExpectedException('BadRequestException');
+    public function testBadRequestException() {
+        $this->setExpectedException('BadRequestException');
 
-		$exception = new BadRequestException('message');
+        $exception = new BadRequestException('message');
 
-		$this->assertTrue($exception instanceof ClientException);
+        $this->assertTrue($exception instanceof ClientException);
 
-		throw $exception;
-	}
-	
-	public function testUnauthorizedException() {
-		$this->setExpectedException('UnauthorizedException');
+        throw $exception;
+    }
+    
+    public function testUnauthorizedException() {
+        $this->setExpectedException('UnauthorizedException');
 
-		$exception = new UnauthorizedException('message');
+        $exception = new UnauthorizedException('message');
 
-		$this->assertTrue($exception instanceof ClientException);
+        $this->assertTrue($exception instanceof ClientException);
 
-		throw $exception;
-	}
-	
-	public function testForbiddenAccessException() {
-		$this->setExpectedException('ForbiddenAccessException');
+        throw $exception;
+    }
+    
+    public function testForbiddenAccessException() {
+        $this->setExpectedException('ForbiddenAccessException');
 
-		$exception = new ForbiddenAccessException('message');
+        $exception = new ForbiddenAccessException('message');
 
-		$this->assertTrue($exception instanceof ClientException);
+        $this->assertTrue($exception instanceof ClientException);
 
-		throw $exception;
-	}
-	
-	public function testResourceNotFoundException() {
-		$this->setExpectedException('ResourceNotFoundException');
+        throw $exception;
+    }
+    
+    public function testResourceNotFoundException() {
+        $this->setExpectedException('ResourceNotFoundException');
 
-		$exception = new ResourceNotFoundException('message');
+        $exception = new ResourceNotFoundException('message');
 
-		$this->assertTrue($exception instanceof ClientException);
+        $this->assertTrue($exception instanceof ClientException);
 
-		throw $exception;
-	}
-	
-	public function testMethodNotAllowedException() {
-		$this->setExpectedException('MethodNotAllowedException');
+        throw $exception;
+    }
+    
+    public function testMethodNotAllowedException() {
+        $this->setExpectedException('MethodNotAllowedException');
 
-		$exception = new MethodNotAllowedException('message');
+        $exception = new MethodNotAllowedException('message');
 
-		$this->assertTrue($exception instanceof ClientException);
+        $this->assertTrue($exception instanceof ClientException);
 
-		throw $exception;
-	}
-	
-	public function testResourceConflictException() {
-		$this->setExpectedException('ResourceConflictException');
+        throw $exception;
+    }
+    
+    public function testResourceConflictException() {
+        $this->setExpectedException('ResourceConflictException');
 
-		$exception = new ResourceConflictException('message');
+        $exception = new ResourceConflictException('message');
 
-		$this->assertTrue($exception instanceof ClientException);
+        $this->assertTrue($exception instanceof ClientException);
 
-		throw $exception;
-	}
+        throw $exception;
+    }
 
-	public function testResourceGoneException() {
-		$this->setExpectedException('ResourceGoneException');
+    public function testResourceGoneException() {
+        $this->setExpectedException('ResourceGoneException');
 
-		$exception = new ResourceGoneException('message');
+        $exception = new ResourceGoneException('message');
 
-		$this->assertTrue($exception instanceof ClientException);
+        $this->assertTrue($exception instanceof ClientException);
 
-		throw $exception;
-	}
+        throw $exception;
+    }
 
-	public function testResourceInvalidException() {
-		$this->setExpectedException('ResourceInvalidException');
+    public function testResourceInvalidException() {
+        $this->setExpectedException('ResourceInvalidException');
 
-		$exception = new ResourceInvalidException('message');
+        $exception = new ResourceInvalidException('message');
 
-		$this->assertTrue($exception instanceof ClientException);
+        $this->assertTrue($exception instanceof ClientException);
 
-		throw $exception;
-	}
+        throw $exception;
+    }
 }
 
 ?>

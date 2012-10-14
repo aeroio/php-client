@@ -25,7 +25,7 @@ class AeroValidatorTest extends PHPUnit_Framework_TestCase {
     public function testValidateNotPresent() {
         $test = new ValidationResourceTest();
         $test->title = 'present';
-		$test->description = null;
+        $test->description = null;
 
         $test->validate = array(
             'title' => array(

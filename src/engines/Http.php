@@ -24,12 +24,12 @@ class Aero_Http implements Engine {
      * @return object
      */
     public function execute($request) {
-        $sid = $request->sid;
-        $auth_token = $request->auth_token;
+        $sid = $request->getSid();
+        $auth_token = $request->getAuthToken();
 
         $query = $this->buildHttpQuery($request);
 
-        $this->setMethod($request->method);
+        $this->setMethod($request->getMethod());
         $this->setHeader("Authorization: Basic " . base64_encode("$sid:$auth_token") . "\r\n" .
             "Connection: close\r\n" .
             "Content-type: application/x-www-form-urlencoded\r\n" .
@@ -40,7 +40,7 @@ class Aero_Http implements Engine {
 
         $context = $this->buildContext($this->request);
 
-        return $this->fetch($request->url, $context);
+        return $this->fetch($request->getUrl(), $context);
     }
 
     /**
@@ -122,7 +122,7 @@ class Aero_Http implements Engine {
     public function buildHttpQuery($resource) {
         $array = array();
 
-        $attributes = $resource->resource->toArray();
+        $attributes = $resource->getResource()->toArray();
 
         foreach ($attributes as $key => $value) {
             if ($value) $array[$key] = $value;

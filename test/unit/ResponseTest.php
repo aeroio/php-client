@@ -33,140 +33,140 @@ class ResponseTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals($expected, $result);
     }
 
-	public function testResponseCodeWhenCurl() {
-		$expected = 200;
+    public function testResponseCodeWhenCurl() {
+        $expected = 200;
 
-		$array = array(
-			'http_code' => $expected
-		);
+        $array = array(
+            'http_code' => $expected
+        );
 
-		$result = Aero_Response::responseCode($array);
+        $result = Aero_Response::responseCode($array);
 
-		$this->assertEquals($expected, $result);
-	}
+        $this->assertEquals($expected, $result);
+    }
 
-	public function testResponseCodeWhenHttp() {
-		$expected = 200;
+    public function testResponseCodeWhenHttp() {
+        $expected = 200;
 
-		$array = array("HTTP/1.1 $expected OK", 'OTHER', 'DATA');
+        $array = array("HTTP/1.1 $expected OK", 'OTHER', 'DATA');
 
-		$result = Aero_Response::responseCode($array);
+        $result = Aero_Response::responseCode($array);
 
-		$this->assertEquals($expected, $result);
-	}
+        $this->assertEquals($expected, $result);
+    }
 
-	public function testRaiseRedirectionExceptionWhen301() {
-		$this->setExpectedException('RedirectionException');
+    public function testRaiseRedirectionExceptionWhen301() {
+        $this->setExpectedException('RedirectionException');
 
-		$response['header']['http_code'] = 301;
+        $response['header']['http_code'] = 301;
 
-		Aero_Response::handle($response);
-	}
+        Aero_Response::handle($response);
+    }
 
-	public function testRaiseRedirectionExceptionWhen302() {
-		$this->setExpectedException('RedirectionException');
+    public function testRaiseRedirectionExceptionWhen302() {
+        $this->setExpectedException('RedirectionException');
 
-		$response['header']['http_code'] = 302;
+        $response['header']['http_code'] = 302;
 
-		Aero_Response::handle($response);
-	}
+        Aero_Response::handle($response);
+    }
 
-	public function testRaiseRedirectionExceptionWhen303() {
-		$this->setExpectedException('RedirectionException');
+    public function testRaiseRedirectionExceptionWhen303() {
+        $this->setExpectedException('RedirectionException');
 
-		$response['header']['http_code'] = 303;
+        $response['header']['http_code'] = 303;
 
-		Aero_Response::handle($response);
-	}
+        Aero_Response::handle($response);
+    }
 
-	public function testRaiseRedirectionExceptionExceptionWhen307() {
-		$this->setExpectedException('RedirectionException');
+    public function testRaiseRedirectionExceptionExceptionWhen307() {
+        $this->setExpectedException('RedirectionException');
 
-		$response['header']['http_code'] = 307;
+        $response['header']['http_code'] = 307;
 
-		Aero_Response::handle($response);
-	}
+        Aero_Response::handle($response);
+    }
 
-	public function testRaiseBadRequestExceptionWhen400() {
-		$this->setExpectedException('BadRequestException');
+    public function testRaiseBadRequestExceptionWhen400() {
+        $this->setExpectedException('BadRequestException');
 
-		$response['header']['http_code'] = 400;
+        $response['header']['http_code'] = 400;
 
-		Aero_Response::handle($response);
-	}
+        Aero_Response::handle($response);
+    }
 
-	public function testRaiseUnauthorizedExceptionWhen401() {
-		$this->setExpectedException('UnauthorizedException');
+    public function testRaiseUnauthorizedExceptionWhen401() {
+        $this->setExpectedException('UnauthorizedException');
 
-		$response['header']['http_code'] = 401;
+        $response['header']['http_code'] = 401;
 
-		Aero_Response::handle($response);
-	}
-	
-	public function testRaiseForbiddenAccessExceptionWhen403() {
-		$this->setExpectedException('ForbiddenAccessException');
+        Aero_Response::handle($response);
+    }
+    
+    public function testRaiseForbiddenAccessExceptionWhen403() {
+        $this->setExpectedException('ForbiddenAccessException');
 
-		$response['header']['http_code'] = 403;
+        $response['header']['http_code'] = 403;
 
-		Aero_Response::handle($response);
-	}
-	
-	public function testRaiseResourceNotFoundExceptionWhen404() {
-		$this->setExpectedException('ResourceNotFoundException');
+        Aero_Response::handle($response);
+    }
+    
+    public function testRaiseResourceNotFoundExceptionWhen404() {
+        $this->setExpectedException('ResourceNotFoundException');
 
-		$response['header']['http_code'] = 404;
+        $response['header']['http_code'] = 404;
 
-		Aero_Response::handle($response);
-	}
-	
-	public function testRaiseMethodNotAllowedExceptionWhen405() {
-		$this->setExpectedException('MethodNotAllowedException');
+        Aero_Response::handle($response);
+    }
+    
+    public function testRaiseMethodNotAllowedExceptionWhen405() {
+        $this->setExpectedException('MethodNotAllowedException');
 
-		$response['header']['http_code'] = 405;
+        $response['header']['http_code'] = 405;
 
-		Aero_Response::handle($response);
-	}
+        Aero_Response::handle($response);
+    }
 
-	public function testRaiseResourceConflictExceptionWhen409() {
-		$this->setExpectedException('ResourceConflictException');
+    public function testRaiseResourceConflictExceptionWhen409() {
+        $this->setExpectedException('ResourceConflictException');
 
-		$response['header']['http_code'] = 409;
+        $response['header']['http_code'] = 409;
 
-		Aero_Response::handle($response);
-	}
+        Aero_Response::handle($response);
+    }
 
-	public function testRaiseResourceGoneExceptionWhen410() {
-		$this->setExpectedException('ResourceGoneException');
+    public function testRaiseResourceGoneExceptionWhen410() {
+        $this->setExpectedException('ResourceGoneException');
 
-		$response['header']['http_code'] = 410;
+        $response['header']['http_code'] = 410;
 
-		Aero_Response::handle($response);
-	}
+        Aero_Response::handle($response);
+    }
 
-	public function testRaiseResourceInvalidExceptionWhen422() {
-		$this->setExpectedException('ResourceInvalidException');
+    public function testRaiseResourceInvalidExceptionWhen422() {
+        $this->setExpectedException('ResourceInvalidException');
 
-		$response['header']['http_code'] = 422;
+        $response['header']['http_code'] = 422;
 
-		Aero_Response::handle($response);
-	}
+        Aero_Response::handle($response);
+    }
 
-	public function testRaiseServerExceptionWhenBetween500and600() {
-		$this->setExpectedException('ServerException');
+    public function testRaiseServerExceptionWhenBetween500and600() {
+        $this->setExpectedException('ServerException');
 
-		$response['header']['http_code'] = rand(500, 600);
+        $response['header']['http_code'] = rand(500, 600);
 
-		Aero_Response::handle($response);
+        Aero_Response::handle($response);
 
-	}
+    }
 
-	public function testRaiseConnectionExceptionWhenNotAnyCase() {
-		$this->setExpectedException('ConnectionException');
+    public function testRaiseConnectionExceptionWhenNotAnyCase() {
+        $this->setExpectedException('ConnectionException');
 
-		$response['header']['http_code'] = 1000;
+        $response['header']['http_code'] = 1000;
 
-		Aero_Response::handle($response);
-	}
+        Aero_Response::handle($response);
+    }
 }
 
 ?>

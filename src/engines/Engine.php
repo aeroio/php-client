@@ -13,6 +13,13 @@
  * Interface that should be used by all of the supplied engines.
  */
 interface Engine {
+
+    /**
+     * Assemble and execute the request.
+     *
+     * @param object $request
+     * @return object
+     */
     public function execute($request);
 }
 

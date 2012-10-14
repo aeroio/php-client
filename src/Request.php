@@ -73,33 +73,53 @@ class Aero_Request {
         $this->resource = $resource;
     }
 
-
     /**
-     * Get a certain property of this object.
+     * Get the SID used for the authorization.
      *
-     * @param string $property
-     * @return mixed
+     * @return string
      */
-    public function __get($property) {
-        if (property_exists($this, $property)) {
-            return $this->$property;
-        }
+    public function getSid() {
+        return $this->sid;
     }
 
     /**
-     * Set the credentials used for authorization.
+     * Get the auth token used for the authentication.
      *
-     * @param array $credentials
-     * @return void
+     * @return string
      */
-    public function setCredentials($credentials) {
-        foreach ($credentials as $key => $value) {
-            $this->$key = $value;
-        }
+    public function getAuthToken() {
+        return $this->auth_token;
     }
 
     /**
-     * Assemblate the url from the base site url, the path to the required
+     * Get the type of method used for the request.
+     *
+     * @return string
+     */
+    public function getMethod() {
+        return $this->method;
+    }
+
+    /**
+     * Get the URL address for the request.
+     *
+     * @return string
+     */
+    public function getUrl() {
+        return $this->url;
+    }
+
+    /**
+     * Get the resource, for which the request will be executed for.
+     *
+     * @return object
+     */
+    public function getResource() {
+        return $this->resource;
+    }
+
+    /**
+     * Assemble the url from the base site url, the path to the required
      * record and the used extension.
      *
      * @param string $site
@@ -108,6 +128,18 @@ class Aero_Request {
      */
     public function assembleUrl($site, $resource) {
         $this->url = $site . $resource->path() . self::EXT;
+    }
+
+    /**
+     * Set the credentials used for authorization.
+     *
+     * @param array $credentials
+     * @return void
+     */
+    protected function setCredentials($credentials) {
+        foreach ($credentials as $key => $value) {
+            $this->$key = $value;
+        }
     }
 }
 

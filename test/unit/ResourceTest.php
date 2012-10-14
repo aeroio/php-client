@@ -88,11 +88,11 @@ class AeroResourceTest extends PHPUnit_Framework_TestCase {
 }
 
 class Test_Resource extends Aero_Resource {
-	public $schema = array(
-		'id',
-		'title',
-		'description'
-	);
-	public $attributes = array();
+    public $schema = array(
+        'id',
+        'title',
+        'description'
+    );
+    public $attributes = array();
 }
 ?>

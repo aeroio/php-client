@@ -19,7 +19,7 @@ class Aero_Connection {
      *
      * @static string
      */
-    public static $site = 'http://localhost:3000/api/v1';
+    public static $site = 'https://aero.io/api/v1';
 
     /**
      * Credentials to be used for user authorization.

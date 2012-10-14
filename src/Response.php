@@ -25,7 +25,7 @@ class Aero_Response {
     public static function handle($result) {
         $code = self::responseCode($result['header']);
 
-        switch($code) {
+        switch ($code) {
             case 301:
                 throw new RedirectionException('The data requested has been assigned new URI.');
             case 302:

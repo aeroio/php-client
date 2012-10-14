@@ -57,6 +57,13 @@ class Aero_Resource {
     const DESTROY = 'DELETE';
 
     /**
+     * The actual attributes of the record with their values.
+     *
+     * @var array
+     */
+    protected $attributes = array();
+
+    /**
      * Constructor, setting the attributes of the resource.
      *
      * @param array $attributes

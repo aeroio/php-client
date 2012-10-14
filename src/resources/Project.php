@@ -31,13 +31,6 @@ class Aero_Project extends Aero_Resource {
     );
 
     /**
-     * The actual attributes of the record with their values.
-     *
-     * @var array
-     */
-    protected $attributes = array();
-
-    /**
      * Assemble the relative path that should be requested.
      *
      * @return string

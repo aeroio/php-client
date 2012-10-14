@@ -33,19 +33,12 @@ class Aero_Error extends Aero_Resource {
     );
 
     /**
-     * The actual attributes of the record with their values.
-     *
-     * @var array
-     */
-    protected $attributes = array();
-
-    /**
      * Assemble the relative path that should be requested.
      *
      * @return string
      */
     public function path() {
-        $url = str_replace(':project_id', $this->project_id, '/projects/:project_id/errors');
+    $url = '/projects/' . $this->project_id . '/errors';
 
         if ($this->id) {
             $url .= "/$this->id";

@@ -55,20 +55,20 @@ class Aero_Curl implements Engine {
      * @return void
      */
     public function createProcess($request) {
-        $sid = $request->sid;
-        $auth_token = $request->auth_token;
+        $sid = $request->getSid();
+        $auth_token = $request->getAuthToken();
 
         $headers = array(
             "Authorization: Basic " . base64_encode("$sid:$auth_token")
         );
 
-        $this->setOption(CURLOPT_URL, $request->url);
+        $this->setOption(CURLOPT_URL, $request->getUrl());
         $this->setOption(CURLOPT_RETURNTRANSFER, true);
         $this->setOption(CURLOPT_HTTPHEADER, $headers);
 
-        $attributes = $request->resource->toArray();
+        $attributes = $request->getResource()->toArray();
 
-        switch($request->method) {
+        switch($request->getMethod()) {
             case 'POST':
                 $this->setOption(CURLOPT_POST, true);
                 $this->setOption(CURLOPT_POSTFIELDS, $attributes);

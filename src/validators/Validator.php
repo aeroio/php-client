@@ -38,9 +38,9 @@ class Aero_Validator {
             }
         }
 
-		if (in_array(false, $array)) return false;
+        if (in_array(false, $array)) return false;
 
-		return true;
+        return true;
     }
 
     /**
