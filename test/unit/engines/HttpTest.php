@@ -30,10 +30,10 @@ class HttpTest extends PHPUnit_Framework_TestCase {
         $engine = $this->getMock('Aero_Http', array(
             'fetch',
             'buildHttpQuery',
-			'buildContext',
-			'setMethod',
-			'setHeader',
-			'setContent'
+            'buildContext',
+            'setMethod',
+            'setHeader',
+            'setContent'
         ));
 
         $engine->expects($this->once())
